@@ -1,186 +1,263 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 
 interface PullChainSwitchProps {
   isDark: boolean;
   onToggle: () => void;
 }
 
-const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
-  const [pullDistance, setPullDistance] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isSnapping, setIsSnapping] = useState(false);
-  const chainRef = useRef<HTMLDivElement>(null);
-  const startY = useRef(0);
-
-  const chainLinks = 8;
-  const triggerThreshold = 60;
-  const maxPull = 100;
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-      const deltaY = e.clientY - startY.current;
-      const clampedDelta = Math.max(0, Math.min(deltaY, maxPull));
-      setPullDistance(clampedDelta);
-    };
-
-    const handleMouseUp = () => {
-      if (!isDragging) return;
-      
-      if (pullDistance > triggerThreshold) {
-        // Trigger snap animation
-        setIsSnapping(true);
-        setTimeout(() => {
-          onToggle();
-          setIsSnapping(false);
-        }, 150);
-      }
-      
-      setIsDragging(false);
-      setPullDistance(0);
-    };
-
-    if (isDragging) {
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-    }
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDragging, pullDistance, onToggle]);
-
-  useEffect(() => {
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isDragging) return;
-      const deltaY = e.touches[0].clientY - startY.current;
-      const clampedDelta = Math.max(0, Math.min(deltaY, maxPull));
-      setPullDistance(clampedDelta);
-    };
-
-    const handleTouchEnd = () => {
-      if (!isDragging) return;
-      
-      if (pullDistance > triggerThreshold) {
-        setIsSnapping(true);
-        setTimeout(() => {
-          onToggle();
-          setIsSnapping(false);
-        }, 150);
-      }
-      
-      setIsDragging(false);
-      setPullDistance(0);
-    };
-
-    if (isDragging) {
-      window.addEventListener("touchmove", handleTouchMove);
-      window.addEventListener("touchend", handleTouchEnd);
-    }
-
-    return () => {
-      window.removeEventListener("touchmove", handleTouchMove);
-      window.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, [isDragging, pullDistance, onToggle]);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    startY.current = e.clientY;
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    startY.current = e.touches[0].clientY;
-  };
-
-  // Calculate chain link positions with elasticity
-  const getChainLinkStyle = (index: number) => {
-    const progress = index / chainLinks;
-    const stretch = pullDistance * (0.3 + progress * 0.7); // More stretch at bottom
-    const wobble = isSnapping ? Math.sin(index * 1.5) * 3 : 0;
+// Simple synthesized sound effect to avoid external assets
+const playClickSound = (isHighPitch: boolean) => {
+  try {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
     
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    // Mechanical switch sound profile
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(isHighPitch ? 800 : 600, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
+    
+    gain.gain.setValueAtTime(0.5, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.15);
+  } catch (e) {
+    // Audio context prevented or not supported
+  }
+};
+
+const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
+  // Physics State
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [isRecovering, setIsRecovering] = useState(false); // The "spring back" state
+  
+  // Refs for logic
+  const chainRef = useRef<HTMLDivElement>(null);
+  const startPos = useRef({ x: 0, y: 0 });
+  const audioLocked = useRef(false);
+
+  // Constants
+  const chainLinks = 12; // More links for fluid look
+  const triggerThreshold = 80;
+  const maxPull = 140;
+
+  // Haptic feedback helper
+  const triggerHaptic = (pattern: number | number[]) => {
+    if (typeof navigator !== "undefined" && navigator.vibrate) {
+      navigator.vibrate(pattern);
+    }
+  };
+
+  // --- MOUSE & TOUCH HANDLERS ---
+
+  const handleStart = (clientX: number, clientY: number) => {
+    setIsDragging(true);
+    setIsRecovering(false);
+    startPos.current = { x: clientX, y: clientY };
+    audioLocked.current = false;
+  };
+
+  const handleMove = useCallback((clientX: number, clientY: number) => {
+    if (!isDragging) return;
+
+    const deltaY = clientY - startPos.current.y;
+    const deltaX = clientX - startPos.current.x;
+
+    // Apply "Resistance" - the further you pull, the harder it gets (Logarithmic)
+    const resistance = 0.5; 
+    const dampening = Math.log(1 + Math.abs(deltaY) / 50) * 40; // Physics ease
+    
+    // Allow dragging down, but limit dragging up
+    const y = deltaY > 0 ? Math.min(deltaY * resistance, maxPull) : deltaY * 0.1;
+    // Allow slight horizontal swing
+    const x = deltaX * 0.4;
+
+    setPosition({ x, y });
+    
+    // Haptic "click" preview when crossing threshold
+    if (y > triggerThreshold && !audioLocked.current) {
+        triggerHaptic(5);
+        audioLocked.current = true; // Prevent spamming
+    } else if (y < triggerThreshold && audioLocked.current) {
+        audioLocked.current = false;
+    }
+  }, [isDragging]);
+
+  const handleEnd = useCallback(() => {
+    if (!isDragging) return;
+    
+    setIsDragging(false);
+    setIsRecovering(true); // Triggers the CSS spring animation
+
+    if (position.y > triggerThreshold) {
+      // SUCCESSFUL PULL
+      triggerHaptic([15, 50, 15]); // Strong mechanical click feel
+      playClickSound(!isDark);
+      onToggle();
+    } else {
+      // CANCELLED PULL
+      triggerHaptic(5); // Light tap
+    }
+
+    // Reset position triggers the recovery animation via CSS
+    setPosition({ x: 0, y: 0 });
+    
+    // Remove recovering state after animation finishes
+    setTimeout(() => setIsRecovering(false), 1000);
+  }, [isDragging, position.y, isDark, onToggle]);
+
+  // --- EVENT LISTENERS ---
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
+    const onMouseUp = () => handleEnd();
+    const onTouchMove = (e: TouchEvent) => handleMove(e.touches[0].clientX, e.touches[0].clientY);
+    const onTouchEnd = () => handleEnd();
+
+    if (isDragging) {
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+      window.addEventListener("touchmove", onTouchMove);
+      window.addEventListener("touchend", onTouchEnd);
+    }
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, [isDragging, handleMove, handleEnd]);
+
+  // --- RENDER HELPERS ---
+
+  // Calculate the physics for individual chain beads
+  const getLinkStyle = (index: number) => {
+    // 0 is top, 1 is bottom
+    const progress = index / chainLinks;
+    
+    // When dragging: Straighten the line from (0,0) to cursor
+    // When recovering: Use CSS swing
+    
+    const currentX = position.x * progress;
+    const currentY = position.y * progress;
+
     return {
-      transform: `translateY(${stretch + wobble}px)`,
-      transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+      transform: `translate(${currentX}px, ${currentY}px)`,
+      transition: isDragging ? 'none' : `transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1)`,
+      transitionDelay: isDragging ? '0ms' : `${index * 5}ms`, // Staggered ripple effect on release
     };
   };
 
   return (
     <div 
       ref={chainRef}
-      className="fixed top-0 right-4 md:right-8 lg:right-12 z-50 select-none"
+      className="fixed top-0 right-8 md:right-16 z-50 select-none isolate"
+      style={{ perspective: "1000px" }}
     >
-      <div className="flex flex-col items-center">
-        {/* Top mount */}
-        <div className="w-3 md:w-4 h-2 md:h-3 bg-muted-foreground/50 rounded-b-sm" />
+      {/* Interaction Area (Invisible larger hit box for easier grabbing) */}
+      <div 
+        className="absolute -left-8 -right-8 top-0 h-96 z-10 cursor-grab active:cursor-grabbing"
+        onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
+        onTouchStart={(e) => handleStart(e.touches[0].clientX, e.touches[0].clientY)}
+      />
+
+      <div className={`flex flex-col items-center origin-top ${isRecovering ? 'animate-pendulum' : ''}`}>
         
-        {/* Chain links - ball chain style */}
-        {[...Array(chainLinks)].map((_, i) => (
-          <div 
-            key={i} 
-            className="flex flex-col items-center"
-            style={getChainLinkStyle(i)}
-          >
-            {/* Connector bar */}
-            <div className="w-px md:w-0.5 h-1.5 md:h-2 bg-muted-foreground/40" />
-            {/* Ball */}
+        {/* Mount Base */}
+        <div className="relative z-20">
+            <div className={`w-6 h-3 rounded-b-md shadow-md ${
+                isDark ? 'bg-slate-700' : 'bg-gray-200'
+            }`} />
+            {/* Screw head */}
+            <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-black/20" />
+        </div>
+
+        {/* The Chain */}
+        <div className="relative flex flex-col items-center -mt-0.5">
+          {[...Array(chainLinks)].map((_, i) => (
             <div 
-              className={`w-1.5 md:w-2 h-1.5 md:h-2 rounded-full transition-colors duration-300 ${
-                isDark 
-                  ? 'bg-gradient-to-br from-slate-400 to-slate-600' 
-                  : 'bg-gradient-to-br from-zinc-300 to-zinc-500'
-              }`}
-              style={{
-                boxShadow: isDark 
-                  ? 'inset 1px 1px 2px rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.3)'
-                  : 'inset 1px 1px 2px rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.2)'
-              }}
-            />
-          </div>
-        ))}
-        
-        {/* Pull handle / ornament */}
+              key={i} 
+              className="flex flex-col items-center"
+              style={getLinkStyle(i)}
+            >
+              {/* Metal Bead */}
+              <div 
+                className={`w-2 h-2 rounded-full relative z-10 ${
+                    isDark 
+                    ? 'bg-gradient-to-br from-slate-300 via-slate-500 to-slate-800' 
+                    : 'bg-gradient-to-br from-yellow-100 via-yellow-400 to-amber-700'
+                }`}
+                style={{
+                   boxShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                }}
+              />
+              {/* Connector Pin (Tiny wire between beads) */}
+              {i < chainLinks - 1 && (
+                <div className={`w-0.5 h-1.5 -my-0.5 ${
+                    isDark ? 'bg-slate-500' : 'bg-yellow-600'
+                }`} />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* The Handle / Ornament */}
         <div 
-          className={`cursor-grab active:cursor-grabbing touch-none ${
-            isDragging ? 'scale-105' : 'hover:scale-102'
-          }`}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
+          className="relative z-20 touch-none pointer-events-none" // Events handled by invisible wrapper
           style={{ 
-            transform: `translateY(${pullDistance * 0.8}px) ${isSnapping ? 'scale(0.9)' : ''}`,
-            transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transform: `translate(${position.x}px, ${position.y}px)`,
+            transition: isDragging ? 'none' : 'transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1)'
           }}
         >
-          {/* Final connector */}
-          <div className="w-px md:w-0.5 h-2 md:h-3 bg-muted-foreground/40 mx-auto" />
-          
-          {/* Ornament - teardrop/bulb shape */}
-          <div className="relative">
-            <div 
-              className={`w-4 md:w-5 h-5 md:h-6 rounded-full transition-all duration-300 ${
+          {/* Connector to first bead */}
+          <div className={`w-0.5 h-2 mx-auto ${
+             isDark ? 'bg-slate-500' : 'bg-yellow-600'
+          }`} />
+
+          {/* The Actual Grip Handle */}
+          <div 
+             className={`w-5 h-8 rounded-full shadow-lg flex items-center justify-center overflow-hidden relative ${
                 isDark 
-                  ? 'bg-gradient-to-b from-slate-500 via-slate-600 to-slate-700' 
-                  : 'bg-gradient-to-b from-amber-100 via-amber-200 to-amber-300'
-              }`}
-              style={{
-                boxShadow: isDark
-                  ? 'inset 2px 2px 4px rgba(255,255,255,0.1), inset -1px -1px 3px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.4)'
-                  : 'inset 2px 2px 4px rgba(255,255,255,0.9), inset -1px -1px 3px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.15)'
-              }}
-            >
-              {/* Highlight */}
-              <div className="absolute top-1 left-1 w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-white/50" />
-            </div>
+                  ? 'bg-gradient-to-b from-slate-600 to-slate-900 ring-1 ring-slate-500' 
+                  : 'bg-gradient-to-b from-amber-700 to-amber-900 ring-1 ring-amber-600'
+             }`}
+          >
+            {/* Wood Grain / Texture Details */}
+            <div className="absolute inset-0 opacity-30 mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
             
-            {/* Glow effect in light mode */}
-            {!isDark && (
-              <div className="absolute inset-0 w-4 md:w-5 h-5 md:h-6 rounded-full bg-amber-200/40 blur-sm animate-pulse" />
-            )}
+            {/* Shiny Highlight */}
+            <div className="absolute top-1 left-2 w-2 h-3 bg-white/20 rounded-full blur-[1px]" />
+            
+            {/* Bottom metallic tip */}
+            <div className={`absolute bottom-0 w-full h-2 ${
+                isDark ? 'bg-slate-400' : 'bg-yellow-500'
+            }`} />
           </div>
         </div>
+
       </div>
+
+      {/* Global styles for pendulum animation */}
+      <style>{`
+        @keyframes pendulum {
+          0% { transform: rotate(0deg); }
+          25% { transform: rotate(2deg); }
+          50% { transform: rotate(-1.5deg); }
+          75% { transform: rotate(0.5deg); }
+          100% { transform: rotate(0deg); }
+        }
+        .animate-pendulum {
+          animation: pendulum 2s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 };
