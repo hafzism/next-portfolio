@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Send, Mic } from "lucide-react";
 
 const quickQuestions = [
-  "Who is Franck?",
+  "Who is Hafeez?",
   "How much experience does he have?",
   "Which languages does he speak?",
   "What are his hobbies?",
@@ -19,7 +19,7 @@ const ChatSection = () => {
   return (
     <div className="w-full max-w-3xl mx-auto mt-8 md:mt-16 opacity-0 animate-fade-in-up animation-delay-500">
       <h2 className="text-lg md:text-2xl text-center text-muted-foreground mb-4 md:mb-6">
-        Ask FranckGPT
+        Ask About Hafzism
       </h2>
       
       {/* Hide quick questions on mobile and tablet */}

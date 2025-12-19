@@ -41,7 +41,7 @@ const Index = () => {
         {/* Header */}
         <header className="text-center mb-4 md:mb-8 lg:mb-12 opacity-0 animate-fade-in-up flex-shrink-0">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-foreground mb-1 md:mb-2">
-            Franck Poingt
+            Hafzism
           </h1>
           <p className="text-xs md:text-sm lg:text-base text-muted-foreground tracking-wide">
             Software Engineer

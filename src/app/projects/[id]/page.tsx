@@ -72,7 +72,7 @@ const ProjectDetail = () => {
             >
                 <Link href="/">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-foreground mb-1 md:mb-2 hover:opacity-70 transition-opacity">
-                        Franck Poingt
+                        Hafzism
                     </h1>
                 </Link>
                 <p className="text-xs md:text-sm lg:text-base text-muted-foreground tracking-wide">

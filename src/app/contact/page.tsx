@@ -47,7 +47,7 @@ const Contact = () => {
             <header className="text-center py-4 md:py-6 lg:py-8 flex-shrink-0 relative z-10">
                 <Link href="/">
                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-foreground mb-1 md:mb-2 hover:opacity-70 transition-opacity">
-                        Franck Poingt
+                        Hafzism
                     </h1>
                 </Link>
                 <p className="text-xs md:text-sm lg:text-base text-muted-foreground tracking-wide">
@@ -126,7 +126,7 @@ const Contact = () => {
                     {/* Social Links */}
                     <div className="flex justify-center gap-4 mt-4 md:mt-6">
                         <a
-                            href="https://www.linkedin.com/in/franck-poingt/"
+                            href="https://www.linkedin.com/in/hafzism/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-2 bg-[#0077B5] text-white rounded-lg hover:opacity-90 transition-opacity"
@@ -134,7 +134,7 @@ const Contact = () => {
                             <Linkedin className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
                         <a
-                            href="https://github.com/FranckPoingt"
+                            href="https://github.com/hafzism"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-2 bg-foreground text-background rounded-lg hover:opacity-90 transition-opacity"
