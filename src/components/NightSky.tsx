@@ -24,7 +24,7 @@ const NightSky = ({ isVisible }: { isVisible: boolean }) => {
   useEffect(() => {
     // Generate minimal stars
     const generatedStars: Star[] = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 120; i++) {
       generatedStars.push({
         id: i,
         x: Math.random() * 100,
@@ -51,9 +51,9 @@ const NightSky = ({ isVisible }: { isVisible: boolean }) => {
         angle: Math.random() * 15 + 30, // 30-45 degrees
         duration: Math.random() * 0.8 + 0.6, // Fast: 0.6-1.4s
       };
-      
+
       setComets(prev => [...prev, newComet]);
-      
+
       // Remove comet after animation
       setTimeout(() => {
         setComets(prev => prev.filter(c => c.id !== newComet.id));
@@ -62,7 +62,7 @@ const NightSky = ({ isVisible }: { isVisible: boolean }) => {
 
     // Initial comet after a delay
     const initialTimeout = setTimeout(spawnComet, 2000);
-    
+
     // Spawn comets randomly every 5-10 seconds
     const interval = setInterval(() => {
       if (Math.random() > 0.3) {
@@ -79,7 +79,7 @@ const NightSky = ({ isVisible }: { isVisible: boolean }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 bg-black">
       {/* Stars */}
       {stars.map((star) => (
         <div
@@ -115,7 +115,7 @@ const NightSky = ({ isVisible }: { isVisible: boolean }) => {
             }}
           >
             {/* Comet tail - long gradient trail */}
-            <div 
+            <div
               className="absolute top-1/2 right-full -translate-y-1/2 h-px w-20 md:w-32 bg-gradient-to-l from-white via-white/60 to-transparent"
             />
             {/* Comet head - bright dot */}

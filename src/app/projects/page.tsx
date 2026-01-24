@@ -3,9 +3,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import SideNav from "@/components/SideNav";
-import PullChainSwitch from "@/components/PullChainSwitch";
-import NightSky from "@/components/NightSky";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/data/projects";
 import { useState, useEffect } from "react";
@@ -29,28 +26,11 @@ const Projects = () => {
     const isTransitioning = transitionState.isTransitioning;
 
     return (
-        <div className="h-screen bg-background relative overflow-hidden flex flex-col font-sans selection:bg-primary/20">
-            
-            {/* Background & Nav Elements */}
-            <NightSky isVisible={isDark} />
-            <PullChainSwitch isDark={isDark} onToggle={toggleTheme} />
-            <SideNav currentPage="/projects" />
+        <div className="h-full relative overflow-hidden flex flex-col font-sans selection:bg-primary/20 bg-background/0">
+
+            {/* Background & Nav Elements removed - handled by Global Layout */}
 
             {/* Fixed Header - Stays put while cards scroll under it */}
-            <motion.header
-                className="relative z-30 text-center py-6 md:py-8 flex-shrink-0 bg-gradient-to-b from-background via-background/90 to-transparent backdrop-blur-[2px]"
-                animate={{ opacity: isTransitioning ? 0 : 1 }}
-                transition={{ duration: 0.3 }}
-            >
-                <Link href="/">
-                    <h1 className="text-3xl md:text-5xl font-medium text-foreground mb-2 tracking-tight hover:opacity-70 transition-opacity">
-                        Hafzism
-                    </h1>
-                </Link>
-                <p className="text-sm md:text-base text-muted-foreground tracking-wide font-light">
-                    Selected Works & Experiments
-                </p>
-            </motion.header>
 
             {/* SCROLL CONTAINER 
                1. no-scrollbar: Hides the bar visually
@@ -65,42 +45,41 @@ const Projects = () => {
                                 key={project.id}
                                 initial={{ opacity: 0, y: 50, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                transition={{ 
-                                    duration: 0.5, 
+                                transition={{
+                                    duration: 0.5,
                                     delay: index * 0.1,
                                     type: "spring",
-                                    stiffness: 100 
+                                    stiffness: 100
                                 }}
                                 // --- THE MAGIC SAUCE: STICKY STACKING ---
-                                className="sticky mb-8 md:mb-12"
+                                className="sticky mb-16 md:mb-24"
                                 style={{
                                     // 1. Calculate top offset so they stack like a deck of cards
                                     //    Header is roughly 120px. We start a bit lower.
-                                    //    We add index * 10px so each card peeks out slightly below the previous one.
-                                    top: `calc(120px + ${index * 15}px)`,
+                                    //    We add index * 90px so each card peeks out clearly.
+                                    top: `calc(130px + ${index * 90}px)`,
                                     // 2. zIndex ensures newer cards slide OVER older ones
-                                    zIndex: index + 1, 
+                                    zIndex: index + 10,
                                 }}
                             >
                                 {/* Visual Wrapper for the Card
                                     Adds the "Physical Card" look (Shadows, Borders) 
                                 */}
-                                <div className={`
-                                    rounded-2xl border backdrop-blur-xl shadow-2xl transition-all duration-300
-                                    ${isDark 
-                                        ? 'bg-card/40 border-white/10 shadow-black/40' 
-                                        : 'bg-white/80 border-black/5 shadow-slate-200/50'
-                                    }
-                                `}>
-                                    <ProjectCard
-                                        id={project.id}
-                                        title={project.title}
-                                        description={project.description}
-                                        icon={project.icon}
-                                        gradient={project.gradient}
-                                        index={index}
-                                    />
-                                </div>
+                                <ProjectCard
+                                    id={project.id}
+                                    title={project.title}
+                                    description={project.description}
+                                    icon={project.icon}
+                                    gradient={project.gradient}
+                                    index={index}
+                                    className={`
+                                            border shadow-2xl
+                                            ${isDark
+                                            ? 'border-white/10 shadow-black/40'
+                                            : 'border-black/5 shadow-slate-200/50'
+                                        }
+                                        `}
+                                />
                             </motion.div>
                         ))}
                     </AnimatePresence>
@@ -112,8 +91,8 @@ const Projects = () => {
                         transition={{ delay: 0.5 }}
                         className="sticky"
                         style={{
-                            top: `calc(120px + ${projects.length * 15}px)`,
-                            zIndex: projects.length + 1,
+                            top: `calc(130px + ${projects.length * 90}px)`,
+                            zIndex: projects.length + 10,
                         }}
                     >
                         <Link
@@ -122,8 +101,8 @@ const Projects = () => {
                                 group relative block w-full rounded-2xl p-8 text-center transition-all duration-300
                                 border-2 border-dashed
                                 hover:scale-[1.01] hover:shadow-xl
-                                ${isDark 
-                                    ? 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20' 
+                                ${isDark
+                                    ? 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
                                     : 'border-black/10 bg-black/5 hover:bg-black/10 hover:border-black/20'
                                 }
                             `}

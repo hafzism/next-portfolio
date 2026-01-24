@@ -4,23 +4,27 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, Calendar, Users, Check } from "lucide-react";
 import { motion } from "framer-motion";
-import SideNav from "@/components/SideNav";
-import PullChainSwitch from "@/components/PullChainSwitch";
-import NightSky from "@/components/NightSky";
 import { projects } from "@/data/projects";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useProjectTransition } from "@/context/ProjectTransitionContext";
 import { useTheme } from "next-themes";
 
-const ProjectDetail = () => {
+interface ProjectDetailProps {
+    onBack?: () => void;
+}
+
+const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
     const { theme, setTheme } = useTheme();
     const { endTransition } = useProjectTransition();
     const [mounted, setMounted] = useState(false);
 
+    console.log("ProjectDetail ID:", id);
     const project = projects.find((p) => p.id === id);
+    console.log("Found project:", project);
+
     const otherProjects = projects.filter((p) => p.id !== id).slice(0, 3);
 
     useEffect(() => {
@@ -58,33 +62,21 @@ const ProjectDetail = () => {
     }
 
     return (
-        <div className="h-screen bg-background relative overflow-hidden transition-colors duration-500 flex flex-col">
-            <NightSky isVisible={isDark} />
-            <PullChainSwitch isDark={isDark} onToggle={toggleTheme} />
-            <SideNav currentPage={`/projects/${id}`} />
+        <div className="h-full relative overflow-hidden transition-colors duration-500 flex flex-col bg-background/0">
 
             {/* Fixed Header */}
-            <motion.header
-                className="text-center py-4 md:py-6 lg:py-8 flex-shrink-0"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.4 }}
-            >
-                <Link href="/">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-foreground mb-1 md:mb-2 hover:opacity-70 transition-opacity">
-                        Hafzism
-                    </h1>
-                </Link>
-                <p className="text-xs md:text-sm lg:text-base text-muted-foreground tracking-wide">
-                    Software Engineer
-                </p>
-            </motion.header>
 
             <main className="flex-1 container max-w-3xl mx-auto px-4 md:px-6 relative z-10 overflow-y-auto pb-16 md:pb-4">
                 {/* Back Link */}
                 <motion.button
-                    onClick={() => router.push("/projects")}
-                    className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors mb-3 md:mb-4"
+                    onClick={() => {
+                        if (onBack) {
+                            onBack();
+                        } else {
+                            router.push("/projects");
+                        }
+                    }}
+                    className="inline-flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors mb-3 md:mb-4 relative z-50"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4, duration: 0.3 }}
@@ -98,6 +90,10 @@ const ProjectDetail = () => {
                     layoutId={`project-card-${id}`}
                     className={cn(
                         "rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 mb-4 md:mb-6",
+                        "border shadow-2xl",
+                        // Remove the glass backgrounds, rely on the gradient for the main fill
+                        // Keep subtle borders for definition if needed, but gradient is sufficient for bg
+                        isDark ? 'border-white/10 shadow-black/40' : 'border-black/5 shadow-slate-200/50',
                         project.gradient
                     )}
                     transition={{
@@ -107,16 +103,25 @@ const ProjectDetail = () => {
                     }}
                 >
                     <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
-                        <div className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-lg md:rounded-xl bg-card/20 backdrop-blur-sm flex items-center justify-center text-xl md:text-2xl lg:text-3xl shrink-0">
+                        <motion.div
+                            layoutId={`project-icon-${id}`}
+                            className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-lg md:rounded-xl bg-card/20 backdrop-blur-sm flex items-center justify-center text-2xl md:text-3xl lg:text-4xl shrink-0"
+                        >
                             {project.icon}
-                        </div>
+                        </motion.div>
                         <div className="flex-1 min-w-0">
-                            <h2 className="text-sm md:text-lg lg:text-xl font-semibold text-white mb-0.5 font-serif">
+                            <motion.h3
+                                layoutId={`project-title-${id}`}
+                                className="text-base md:text-xl lg:text-2xl font-semibold text-white mb-1 font-serif"
+                            >
                                 {project.title}
-                            </h2>
-                            <p className="text-xs md:text-sm text-white/80 line-clamp-2">
+                            </motion.h3>
+                            <motion.p
+                                layoutId={`project-desc-${id}`}
+                                className="text-sm md:text-base text-white/80 line-clamp-2"
+                            >
                                 {project.description}
-                            </p>
+                            </motion.p>
                         </div>
                     </div>
                 </motion.div>

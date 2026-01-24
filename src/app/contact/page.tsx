@@ -3,9 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Send, Linkedin, Github } from "lucide-react";
-import SideNav from "@/components/SideNav";
-import PullChainSwitch from "@/components/PullChainSwitch";
-import NightSky from "@/components/NightSky";
 import { useTheme } from "next-themes";
 
 const Contact = () => {
@@ -38,22 +35,9 @@ const Contact = () => {
     };
 
     return (
-        <div className="h-screen bg-background flex flex-col overflow-hidden relative transition-colors duration-500">
-            <NightSky isVisible={isDark} />
-            <PullChainSwitch isDark={isDark} onToggle={toggleTheme} />
-            <SideNav currentPage="/contact" />
+        <div className="h-full flex flex-col overflow-y-auto relative transition-colors duration-500 no-scrollbar bg-background/0">
 
             {/* Fixed Header */}
-            <header className="text-center py-4 md:py-6 lg:py-8 flex-shrink-0 relative z-10">
-                <Link href="/">
-                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium text-foreground mb-1 md:mb-2 hover:opacity-70 transition-opacity">
-                        Hafzism
-                    </h1>
-                </Link>
-                <p className="text-xs md:text-sm lg:text-base text-muted-foreground tracking-wide">
-                    Software Engineer
-                </p>
-            </header>
 
             {/* Main Content */}
             <main className="flex-1 flex items-center justify-center px-4 pb-16 md:pb-8 relative z-10">

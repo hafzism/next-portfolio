@@ -2,14 +2,14 @@ import React from 'react';
 
 const ChatBubbles = () => {
   const bubbles = [
-    { isRight: true,  delay: 0 },
+    { isRight: true, delay: 0 },
     { isRight: false, delay: 1.5 },
-    { isRight: true,  delay: 3.0 },
+    { isRight: true, delay: 3.0 },
     { isRight: false, delay: 4.5 },
   ];
 
   return (
-    <div className="absolute top-4 right-4 w-28 h-40 overflow-hidden pointer-events-none select-none mask-fade-top">
+    <div className="absolute top-4 right-4 w-28 h-40 overflow-hidden pointer-events-none select-none mask-fade-top scale-125 origin-top-right">
       <div className="relative w-full h-full flex flex-col justify-end pb-2">
         {bubbles.map((bubble, index) => (
           <div
@@ -17,8 +17,8 @@ const ChatBubbles = () => {
             className={`
               absolute flex items-center gap-1 p-2 rounded-2xl shadow-sm
               animate-chat-cycle
-              ${bubble.isRight 
-                ? 'right-0 bg-blue-500 rounded-tr-sm text-white' 
+              ${bubble.isRight
+                ? 'right-0 bg-blue-500 rounded-tr-sm text-white'
                 : 'left-0 bg-emerald-500 rounded-tl-sm text-white'}
             `}
             style={{

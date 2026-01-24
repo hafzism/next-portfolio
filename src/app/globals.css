@@ -38,7 +38,7 @@
     --card-shadow: 0 2px 20px -4px hsl(30 10% 15% / 0.08);
     --card-shadow-hover: 0 8px 30px -4px hsl(30 10% 15% / 0.12);
     --bead-color: 30 10% 25%;
-    --marquee-speed: 25s;
+    --marquee-speed: 7s;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -86,14 +86,18 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
+
+  html,
+  body {
+    @apply h-full overflow-hidden;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased flex flex-col;
     font-family: 'Inter', sans-serif;
   }
+
+  /* ... rest of base ... */
 
   h1,
   h2,
@@ -124,10 +128,12 @@
 
   .marquee-container {
     @apply overflow-hidden relative;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
 
   .marquee-content {
-    @apply flex gap-4 animate-marquee;
+    @apply flex animate-marquee;
   }
 
   .marquee-content:hover {
@@ -135,7 +141,7 @@
   }
 
   .project-icon {
-    @apply w-14 h-14 rounded-xl flex items-center justify-center text-2xl transition-transform duration-200;
+    @apply w-20 h-20 mr-4 rounded-2xl flex items-center justify-center text-4xl transition-transform duration-200;
   }
 
   .project-icon:hover {
@@ -159,6 +165,53 @@
   .bead-line {
     @apply w-0.5 h-8;
     background: hsl(var(--bead-color));
+  }
+
+  .glass-panel {
+    /* Base styles if needed, or leave empty/fallback */
+  }
+
+  .dark .glass-panel {
+    @apply relative overflow-hidden backdrop-blur-xl border border-white/30;
+    background: rgba(255, 255, 255, 0.4) !important;
+    background-color: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 0 0px 0px rgba(255, 255, 255, 0) !important;
+  }
+
+  .glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.8),
+        transparent);
+    pointer-events: none;
+  }
+
+  .glass-panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.8),
+        transparent,
+        rgba(255, 255, 255, 0.3));
+    pointer-events: none;
   }
 }
 
@@ -326,6 +379,22 @@
   .card-exit-animation {
     animation: card-exit 0.3s ease-out forwards;
     pointer-events: none;
+  }
+
+  @keyframes bob {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(5px);
+    }
+  }
+
+  .animate-bob {
+    animation: bob 3s ease-in-out infinite;
   }
 }
 

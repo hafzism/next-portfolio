@@ -11,9 +11,10 @@ interface ProjectCardProps {
   icon: string;
   gradient: string;
   index: number;
+  className?: string;
 }
 
-const ProjectCard = ({ id, title, description, icon, gradient, index }: ProjectCardProps) => {
+const ProjectCard = ({ id, title, description, icon, gradient, index, className }: ProjectCardProps) => {
   const router = useRouter();
   const { startTransition, transitionState } = useProjectTransition();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -43,34 +44,40 @@ const ProjectCard = ({ id, title, description, icon, gradient, index }: ProjectC
         opacity: isOtherTransitioning ? 0 : 1,
         y: 0,
         transition: {
-          opacity: { duration: 0.3 },
-          y: { duration: 0.4, delay: index * 0.1 }
+          opacity: { duration: 0.5 },
+          y: { duration: 0.6, delay: index * 0.1 }
         }
       }}
       className={cn(
-        "group cursor-pointer sticky rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 transition-shadow duration-300",
+        "group cursor-pointer rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 transition-shadow duration-300",
         "hover:shadow-2xl shadow-lg",
-        gradient
+        gradient,
+        className
       )}
-      style={{
-        top: `${60 + index * 30}px`,
-        zIndex: index + 1,
-      }}
     >
       <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
         {/* Icon */}
-        <div className="w-10 h-10 md:w-12 md:h-12 lg:w-16 lg:h-16 rounded-lg md:rounded-xl bg-card/20 backdrop-blur-sm flex items-center justify-center text-xl md:text-2xl lg:text-3xl shrink-0 transition-transform duration-300 group-hover:scale-110">
+        <motion.div
+          layoutId={`project-icon-${id}`}
+          className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-lg md:rounded-xl bg-card/20 backdrop-blur-sm flex items-center justify-center text-2xl md:text-3xl lg:text-4xl shrink-0 transition-transform duration-300 group-hover:scale-110"
+        >
           {icon}
-        </div>
+        </motion.div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0">
-          <h3 className="text-sm md:text-base lg:text-xl font-semibold text-white mb-0.5 font-serif">
+        <div className="flex-1 min-w-0 relative z-10">
+          <motion.h3
+            layoutId={`project-title-${id}`}
+            className="text-base md:text-xl lg:text-2xl font-semibold text-white mb-1 font-serif"
+          >
             {title}
-          </h3>
-          <p className="text-xs md:text-sm text-white/80 line-clamp-2">
+          </motion.h3>
+          <motion.p
+            layoutId={`project-desc-${id}`}
+            className="text-sm md:text-base text-white/80 line-clamp-2"
+          >
             {description}
-          </p>
+          </motion.p>
         </div>
       </div>
     </motion.div>

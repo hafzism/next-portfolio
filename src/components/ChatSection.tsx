@@ -3,10 +3,9 @@ import { Send, Mic } from "lucide-react";
 
 const quickQuestions = [
   "Who is Hafeez?",
-  "How much experience does he have?",
-  "Which languages does he speak?",
-  "What are his hobbies?",
+  "What are his skills?",
   "How can I contact him?",
+
 ];
 
 const ChatSection = () => {
@@ -17,39 +16,40 @@ const ChatSection = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto mt-8 md:mt-16 opacity-0 animate-fade-in-up animation-delay-500">
-      <h2 className="text-lg md:text-2xl text-center text-muted-foreground mb-4 md:mb-6">
-        Ask About Hafzism
-      </h2>
-      
-      {/* Hide quick questions on mobile and tablet */}
-      <div className="hidden lg:flex flex-wrap gap-2 justify-center mb-6">
-        {quickQuestions.map((question, index) => (
-          <button
-            key={index}
-            className="chat-bubble"
-            onClick={() => handleQuestionClick(question)}
-          >
-            {question}
-          </button>
-        ))}
-      </div>
+    <div className="w-full max-w-8xl mx-auto mt-8 md:mt-16 opacity-0 animate-fade-in-up animation-delay-500">
+      {/* Floating Chat Interface fixed at bottom */}
+      <div className="fixed bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-full max-w-8xl px-4 md:px-6 z-40">
 
-      <div className="chat-input-container">
-        <div className="flex items-center p-3 md:p-4">
-          <button className="p-1.5 md:p-2 text-muted-foreground hover:text-foreground transition-colors">
-            <Mic className="w-4 h-4 md:w-5 md:h-5" />
-          </button>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="What would you like to know?"
-            className="flex-1 bg-transparent border-none outline-none px-3 md:px-4 text-sm md:text-base text-foreground placeholder:text-muted-foreground"
-          />
-          <button className="p-1.5 md:p-2 bg-foreground text-background rounded-lg hover:opacity-80 transition-opacity">
-            <Send className="w-4 h-4 md:w-5 md:h-5" />
-          </button>
+        <h2 className="text-base md:text-2xl text-center text-muted-foreground mb-3 opacity-90 shadow-black/50 text-shadow">
+          What's on your mind?
+        </h2>
+
+        {/* Quick Questions bubbles appearing above input */}
+        <div className="hidden lg:flex flex-wrap gap-2 justify-center mb-4">
+          {quickQuestions.map((question, index) => (
+            <button
+              key={index}
+              className="chat-bubble shadow-lg backdrop-blur-md bg-background/80 hover:bg-background border border-border/50"
+              onClick={() => handleQuestionClick(question)}
+            >
+              {question}
+            </button>
+          ))}
+        </div>
+
+        <div className="chat-input-container shadow-2xl shadow-black/20">
+          <div className="flex items-center p-2 md:p-3 bg-card/80 backdrop-blur-xl rounded-2xl border border-white/10">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="What would you like to know?"
+              className="flex-1 bg-transparent border-none outline-none px-3 md:px-4 text-sm md:text-base text-foreground placeholder:text-muted-foreground/70"
+            />
+            <button className="p-2 md:p-2.5 bg-primary text-primary-foreground rounded-xl hover:opacity-90 transition-all hover:scale-105 shadow-lg shadow-primary/20">
+              <Send className="w-4 h-4 md:w-5 md:h-5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
