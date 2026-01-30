@@ -2,12 +2,85 @@
 
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/data/projects";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useProjectTransition } from "@/context/ProjectTransitionContext";
 import { useTheme } from "next-themes";
+
+interface StickyProjectCardProps {
+    project: any;
+    index: number;
+    total: number;
+    isDark: boolean;
+}
+
+const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardProps) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // We target the CONTAINER for scroll progress to drive the scale of the inner card
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    });
+
+    // Scale down to 0.95 as the card sits at the top and the next one comes up
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+
+    // Calculate top offset: 120px is a safe header height approximation + slight graduation
+    const topOffset = 120 + (index * 10);
+
+    return (
+        // STICKY WRAPPER: Pure CSS, no Framer Motion interference on the position
+        <div
+            ref={containerRef}
+            className="sticky top-0 mb-[25vh] last:mb-0"
+            style={{
+                top: `${topOffset}px`,
+                zIndex: index + 1, // Ascending z-index so newer cards sit on top
+            }}
+        >
+            {/* ANIMATED CONTENT: Handles the depth effect */}
+            <motion.div style={{ scale }} className="relative origin-top">
+                {/* Shadow for depth when stacking */}
+                <div className="absolute inset-0 -z-10 bg-black/20 blur-xl translate-y-8 rounded-[2rem]" />
+
+                {project.isComingSoon ? (
+                    <ProjectCard
+                        id="coming-soon"
+                        title="Coming Soon"
+                        description="Let's build something together"
+                        icon={(
+                            <div className="transition-transform duration-500 group-hover:rotate-90">
+                                <Plus className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-muted-foreground" />
+                            </div>
+                        )}
+                        gradient={isDark ? 'bg-slate-900 shadow-2xl shadow-black/40 border border-white/10' : 'bg-slate-200 shadow-2xl shadow-slate-200/50 border border-black/5'}
+                        index={index}
+                        className="border-2 border-dashed"
+                    />
+                ) : (
+                    <ProjectCard
+                        id={project.id}
+                        title={project.title}
+                        description={project.description}
+                        icon={project.icon}
+                        gradient={project.gradient}
+                        index={index}
+                        className={`
+                            border shadow-2xl
+                            ${isDark
+                                ? 'border-white/10 shadow-black/40' // Dark mode card
+                                : 'border-black/5 shadow-slate-200/50' // Light mode card
+                            }
+                        `}
+                    />
+                )}
+            </motion.div>
+        </div>
+    );
+};
 
 const Projects = () => {
     const { theme, setTheme } = useTheme();
@@ -22,115 +95,28 @@ const Projects = () => {
     if (!mounted) return null;
 
     const isDark = theme === "dark";
-    const toggleTheme = () => setTheme(isDark ? "light" : "dark");
-    const isTransitioning = transitionState.isTransitioning;
+    const allProjects = [...projects, { id: 'coming-soon', isComingSoon: true }];
 
     return (
         <div className="h-full relative overflow-hidden flex flex-col font-sans selection:bg-primary/20 bg-background/0">
-
-            {/* Background & Nav Elements removed - handled by Global Layout */}
-
-            {/* Fixed Header - Stays put while cards scroll under it */}
-
-            {/* SCROLL CONTAINER 
-               1. no-scrollbar: Hides the bar visually
-               2. scroll-smooth: Better feeling
-               3. pb-20: Space at bottom
-            */}
+            {/* SCROLL CONTAINER */}
             <main className="flex-1 overflow-y-auto no-scrollbar scroll-smooth relative z-10 px-4 md:px-6 pb-20">
-                <div className="max-w-3xl mx-auto pt-4 pb-40">
-                    <AnimatePresence mode="sync">
-                        {projects.map((project, index) => (
-                            <motion.div
-                                key={project.id}
-                                initial={{ opacity: 0, y: 50, scale: 0.95 }}
-                                animate={{ opacity: 1, y: 0, scale: 1 }}
-                                transition={{
-                                    duration: 0.5,
-                                    delay: index * 0.1,
-                                    type: "spring",
-                                    stiffness: 100
-                                }}
-                                // --- THE MAGIC SAUCE: STICKY STACKING ---
-                                className="sticky mb-16 md:mb-24"
-                                style={{
-                                    // 1. Calculate top offset so they stack like a deck of cards
-                                    //    Header is roughly 120px. We start a bit lower.
-                                    //    We add index * 90px so each card peeks out clearly.
-                                    top: `calc(130px + ${index * 90}px)`,
-                                    // 2. zIndex ensures newer cards slide OVER older ones
-                                    zIndex: index + 10,
-                                }}
-                            >
-                                {/* Visual Wrapper for the Card
-                                    Adds the "Physical Card" look (Shadows, Borders) 
-                                */}
-                                <ProjectCard
-                                    id={project.id}
-                                    title={project.title}
-                                    description={project.description}
-                                    icon={project.icon}
-                                    gradient={project.gradient}
-                                    index={index}
-                                    className={`
-                                            border shadow-2xl
-                                            ${isDark
-                                            ? 'border-white/10 shadow-black/40'
-                                            : 'border-black/5 shadow-slate-200/50'
-                                        }
-                                        `}
-                                />
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-
-                    {/* "New Project" Card - The last one in the stack */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        className="sticky"
-                        style={{
-                            top: `calc(130px + ${projects.length * 90}px)`,
-                            zIndex: projects.length + 10,
-                        }}
-                    >
-                        <Link
-                            href="/#contact"
-                            className={`
-                                group relative block w-full rounded-2xl p-8 text-center transition-all duration-300
-                                border-2 border-dashed
-                                hover:scale-[1.01] hover:shadow-xl
-                                ${isDark
-                                    ? 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20'
-                                    : 'border-black/10 bg-black/5 hover:bg-black/10 hover:border-black/20'
-                                }
-                            `}
-                        >
-                            <div className="flex flex-col items-center gap-4 py-8">
-                                <div className="p-4 rounded-full bg-background shadow-sm transition-transform duration-500 group-hover:rotate-90">
-                                    <Plus className="w-8 h-8 text-muted-foreground" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-semibold mb-1">Coming Soon</h3>
-                                    <p className="text-muted-foreground">Lets build something together</p>
-                                </div>
-                            </div>
-                        </Link>
-                    </motion.div>
+                {/* 
+                   Increased bottom padding significantly to allow the last card 
+                   to be fully viewed before hitting the scroll limit.
+                */}
+                <div className="max-w-2xl mx-auto pt-8 pb-32">
+                    {allProjects.map((project: any, index: number) => (
+                        <StickyProjectCard
+                            key={project.id}
+                            project={project}
+                            index={index}
+                            total={allProjects.length}
+                            isDark={isDark}
+                        />
+                    ))}
                 </div>
             </main>
-
-            {/* Utility Styles for Hiding Scrollbar */}
-            <style jsx global>{`
-                .no-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                .no-scrollbar {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-            `}</style>
         </div>
     );
 };

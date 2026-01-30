@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const PeekingMemoji = () => {
     return (
-        <div className="absolute -bottom-[1px] -right-0 w-32 h-32 md:w-56 md:h-56 pointer-events-none">
+        <div className="absolute -bottom-2 -right-16 w-32 h-32 md:w-60 md:h-60 pointer-events-none">
             {/* Container for the bobbing animation */}
             <div className="relative w-full h-full origin-bottom">
                 {/* Passive Image (Default) */}

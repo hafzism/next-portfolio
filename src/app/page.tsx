@@ -59,7 +59,7 @@ const Index = () => {
                 description="Freelance, Internship & Education."
                 className="h-full min-h-[80px] md:min-h-[100px] lg:min-h-[120px] group"
               >
-                {/* <PeekingMemoji /> */}
+                <PeekingMemoji />
               </BentoCard>
             </Link>
           </div>

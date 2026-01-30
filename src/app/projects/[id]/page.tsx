@@ -19,28 +19,22 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
     const router = useRouter();
     const { theme, setTheme } = useTheme();
     const { endTransition } = useProjectTransition();
-    const [mounted, setMounted] = useState(false);
+    // Clean up unused state reference if I removed it fully in previous step
+    // Actually, I removed the logic block, but I need to keep the cleanup effect.
+
+    useEffect(() => {
+        // End transition after component mounts
+        const timer = setTimeout(() => {
+            endTransition();
+        }, 100);
+        return () => clearTimeout(timer);
+    }, [id, endTransition]);
 
     console.log("ProjectDetail ID:", id);
     const project = projects.find((p) => p.id === id);
     console.log("Found project:", project);
 
     const otherProjects = projects.filter((p) => p.id !== id).slice(0, 3);
-
-    useEffect(() => {
-        setMounted(true);
-
-        // End transition after component mounts
-        const timer = setTimeout(() => {
-            endTransition();
-        }, 100);
-
-        return () => clearTimeout(timer);
-    }, [id]);
-
-    if (!mounted) {
-        return null;
-    }
 
     const isDark = theme === "dark";
 
@@ -66,7 +60,7 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
 
             {/* Fixed Header */}
 
-            <main className="flex-1 container max-w-3xl mx-auto px-4 md:px-6 relative z-10 overflow-y-auto pb-16 md:pb-4">
+            <main className="flex-1 container max-w-2xl mx-auto px-4 md:px-6 relative z-10 overflow-y-auto pb-16 md:pb-4 no-scrollbar">
                 {/* Back Link */}
                 <motion.button
                     onClick={() => {
@@ -89,10 +83,9 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                 <motion.div
                     layoutId={`project-card-${id}`}
                     className={cn(
-                        "rounded-xl md:rounded-2xl p-3 md:p-4 lg:p-6 mb-4 md:mb-6",
+                        "rounded-2xl md:rounded-[2rem] p-4 md:p-5 lg:p-6 mb-4 md:mb-6",
+                        "min-h-[140px] md:min-h-[190px] flex flex-col justify-center",
                         "border shadow-2xl",
-                        // Remove the glass backgrounds, rely on the gradient for the main fill
-                        // Keep subtle borders for definition if needed, but gradient is sufficient for bg
                         isDark ? 'border-white/10 shadow-black/40' : 'border-black/5 shadow-slate-200/50',
                         project.gradient
                     )}
@@ -102,17 +95,17 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                         damping: 30,
                     }}
                 >
-                    <div className="flex items-center gap-2 md:gap-3 lg:gap-4">
+                    <div className="flex flex-col md:flex-row items-center md:items-center gap-4 md:gap-6">
                         <motion.div
                             layoutId={`project-icon-${id}`}
-                            className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-lg md:rounded-xl bg-card/20 backdrop-blur-sm flex items-center justify-center text-2xl md:text-3xl lg:text-4xl shrink-0"
+                            className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-xl md:rounded-[1rem] bg-card/20 backdrop-blur-sm flex items-center justify-center text-xl md:text-2xl lg:text-3xl shrink-0"
                         >
                             {project.icon}
                         </motion.div>
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 text-center md:text-left">
                             <motion.h3
                                 layoutId={`project-title-${id}`}
-                                className="text-base md:text-xl lg:text-2xl font-semibold text-white mb-1 font-serif"
+                                className="text-base md:text-xl font-semibold text-white mb-1 font-serif"
                             >
                                 {project.title}
                             </motion.h3>
@@ -129,8 +122,8 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                 {/* Content Grid - Fades in after card arrives */}
                 <motion.div
                     className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
                 >
                     {/* Left Column - About & Features */}
@@ -232,7 +225,7 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                     <h3 className="text-sm md:text-lg lg:text-xl font-semibold text-foreground mb-3 md:mb-4 font-serif">
                         More Projects
                     </h3>
-                    <div className="flex gap-2 md:gap-4 overflow-x-auto pb-2">
+                    <div className="flex gap-2 md:gap-4 overflow-x-auto py-4 px-2 -mx-2 no-scrollbar">
                         {otherProjects.map((otherProject, index) => (
                             <motion.div
                                 key={otherProject.id}

@@ -43,7 +43,7 @@ const About = () => {
             {/* Fixed Header */}
 
             {/* Main Content - Scrollable on mobile if needed */}
-            <main className="flex-1 overflow-y-auto px-4 pb-16 md:pb-8 relative z-10">
+            <main className="flex-1 overflow-y-auto px-4 pb-16 md:pb-8 relative z-10 no-scrollbar">
                 <div className="w-full max-w-2xl mx-auto">
                     {/* About Me Section */}
                     <section className="mb-4 md:mb-6">

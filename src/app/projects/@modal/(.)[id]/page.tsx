@@ -18,6 +18,11 @@ export default function InterceptedProjectDetail() {
             />
             {/* Content Container - z-index higher than backdrop */}
             <div className="relative z-10 w-full h-full overflow-hidden flex flex-col">
+                {/* 
+                  We re-add the Header here because the modal backdrop covers the main layout header.
+                  To prevent a "double header" flash, we can animate it or just let it render. 
+                  Given the blackout backdrop, rendering it normally is usually fine as it covers the original.
+                */}
                 <Header />
                 <ProjectDetail onBack={() => router.back()} />
             </div>
