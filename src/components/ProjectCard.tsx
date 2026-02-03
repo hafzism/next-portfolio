@@ -3,12 +3,13 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useProjectTransition } from "@/context/ProjectTransitionContext";
 import { useRef, ReactNode } from "react";
+import Image, { StaticImageData } from "next/image";
 
 interface ProjectCardProps {
   id: string;
   title: string;
   description: string;
-  icon: string | ReactNode;
+  icon: string | ReactNode | StaticImageData;
   gradient: string;
   index: number;
   className?: string;
@@ -21,7 +22,7 @@ const ProjectCard = ({ id, title, description, icon, gradient, index, className 
 
   const handleClick = () => {
     if (id === 'coming-soon') {
-      router.push('/#contact');
+      router.push('/contact');
       return;
     }
 
@@ -54,33 +55,49 @@ const ProjectCard = ({ id, title, description, icon, gradient, index, className 
         }
       }}
       className={cn(
-        "group cursor-pointer rounded-2xl md:rounded-[2rem] p-4 md:p-5 lg:p-6 transition-shadow duration-300",
-        "min-h-[140px] md:min-h-[190px] flex flex-col justify-center",
+        "group cursor-pointer rounded-[2rem] p-6 md:p-8 transition-shadow duration-300",
+        "min-h-[160px] md:min-h-[200px] flex flex-col justify-center relative overflow-hidden",
         "hover:shadow-2xl shadow-lg",
         gradient,
         className
       )}
     >
-      <div className="flex flex-col md:flex-row items-center md:items-center gap-4 md:gap-6">
+      {/* Texture Overlay */}
+      <div className="grain-overlay opacity-[0.08]" />
+
+      <div className="flex flex-row items-center gap-6 md:gap-8 relative z-10">
         {/* Icon */}
         <motion.div
           layoutId={`project-icon-${id}`}
-          className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-xl md:rounded-[1rem] bg-card/20 backdrop-blur-sm flex items-center justify-center text-xl md:text-2xl lg:text-3xl shrink-0 transition-transform duration-300 group-hover:scale-110"
+          className={cn(
+            "w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-2xl md:rounded-[1.5rem] flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105 overflow-hidden",
+            (id === 'hayon' || id === 'NearBuy') ? 'bg-white' :
+              (id === 'scrybe') ? 'bg-[#1e3876]' :
+                (id === 'LitBay') ? 'bg-[#be9971]' : 'bg-black/10'
+          )}
         >
-          {icon}
+          {typeof icon === 'string' || (!icon || (typeof icon === 'object' && !('src' in icon))) ? (
+            icon
+          ) : (
+            <Image
+              src={icon as StaticImageData}
+              alt={title}
+              className="w-full h-full object-contain p-4 md:p-6"
+            />
+          )}
         </motion.div>
 
         {/* Content */}
-        <div className="flex-1 min-w-0 relative z-10 text-center md:text-left">
+        <div className="flex-1 min-w-0 text-left">
           <motion.h3
             layoutId={`project-title-${id}`}
-            className="text-base md:text-xl font-semibold text-white mb-1 font-serif"
+            className="text-base md:text-2xl font-bold text-white mb-3 md:mb-4 font-serif tracking-tight"
           >
             {title}
           </motion.h3>
           <motion.p
             layoutId={`project-desc-${id}`}
-            className="text-sm md:text-base text-white/80 line-clamp-2"
+            className="text-xs md:text-base text-white/90 line-clamp-2 max-w-xl font-medium leading-relaxed"
           >
             {description}
           </motion.p>

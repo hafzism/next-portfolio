@@ -5,13 +5,23 @@ import { FolderOpen, User, Home, Briefcase, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 const SideNav = () => {
   const pathname = usePathname();
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
   if (pathname === "/") return null;
+
+  const isDark = resolvedTheme === "dark";
 
   const navItems = [
     { icon: Home, path: "/", label: "Home" },
@@ -24,7 +34,10 @@ const SideNav = () => {
   return (
     <>
       {/* Desktop: Left side floating dock */}
-      <nav className="fixed left-4 md:left-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4 p-3 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl">
+      <nav className={cn(
+        "fixed left-4 md:left-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4 p-3 rounded-2xl bg-white/5 backdrop-blur-xl border shadow-2xl transition-colors duration-300",
+        isDark ? "border-white/10" : "border-black"
+      )}>
         {navItems.map((item, index) => {
           const Icon = item.icon;
           const isActive = pathname === item.path ||
@@ -69,7 +82,10 @@ const SideNav = () => {
       </nav>
 
       {/* Mobile/Tablet: Bottom floating dock */}
-      <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex md:hidden items-center gap-1 p-2 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/10 shadow-2xl">
+      <nav className={cn(
+        "fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex md:hidden items-center gap-1 p-2 rounded-2xl bg-white/10 backdrop-blur-lg border shadow-2xl transition-colors duration-300",
+        isDark ? "border-white/10" : "border-black"
+      )}>
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.path ||

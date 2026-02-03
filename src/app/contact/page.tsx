@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Send, Linkedin, Github } from "lucide-react";
+import { Send, Linkedin, Github, Instagram, Mail } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const Contact = () => {
@@ -124,6 +124,25 @@ const Contact = () => {
                             className="p-2 bg-foreground text-background rounded-lg hover:opacity-90 transition-opacity"
                         >
                             <Github className="w-5 h-5 md:w-6 md:h-6" />
+                        </a>
+                        <a
+                            href="https://instagram.com/hafzism"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 bg-[#E1306C] text-white rounded-lg hover:opacity-90 transition-opacity"
+                        >
+                            <Instagram className="w-5 h-5 md:w-6 md:h-6" />
+                        </a>
+                    </div>
+
+                    {/* Email Display */}
+                    <div className="flex flex-col items-center mt-6">
+                        <a
+                            href="mailto:thehafzism@gmail.com"
+                            className="text-sm md:text-base font-bold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                        >
+                            <Mail className="w-4 h-4" />
+                            thehafzism@gmail.com
                         </a>
                     </div>
                 </div>

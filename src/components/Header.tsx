@@ -22,7 +22,7 @@ const Header = () => {
                 </h1>
             </Link>
             <p className="text-sm md:text-base text-muted-foreground font-sans font-bold -mt-1">
-                Software Engineer
+                Software Developer
             </p>
         </header>
     );

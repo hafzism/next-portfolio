@@ -24,7 +24,7 @@ export default function InterceptedProjectDetail() {
                   Given the blackout backdrop, rendering it normally is usually fine as it covers the original.
                 */}
                 <Header />
-                <ProjectDetail onBack={() => router.back()} />
+                <ProjectDetail onBack={() => router.push("/projects")} />
             </div>
         </div>
     );

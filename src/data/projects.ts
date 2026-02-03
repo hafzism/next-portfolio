@@ -1,12 +1,19 @@
+import { StaticImageData } from "next/image";
+import hayonLogo from "@/assets/hayonlogo.png";
+import LitBayLogo from "@/assets/LitBay_logo.png";
+import NearBuyLogo from "@/assets/nearlogo.png";
+import scrybeLogo from "@/assets/scrybe_logo.png";
+
 export interface Project {
   id: string;
   title: string;
   description: string;
-  icon: string;
+  icon: string | StaticImageData;
   gradient: string;
   about: string;
   features: string[];
   link?: string;
+  github?: string;
   year: string;
   users?: string;
   tech: { name: string; icon: string }[];
@@ -14,87 +21,107 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: "scraaatch",
-    title: "Scraaatch",
-    description: "Create and send custom scratch cards to your family and friends.",
-    icon: "🎫",
-    gradient: "bg-gradient-to-br from-amber-500 to-amber-600",
-    about: "An innovative web application that allows users to design personalized scratch cards for various occasions. Users can customize the design, add messages, and send digital scratch cards to their loved ones.",
+    id: "hayon",
+    title: "Hayon",
+    description: "Create, schedule, and publish posts across multiple social platforms from one place.",
+    icon: hayonLogo,
+    gradient: "bg-[#0b8d51]",
+    about: "A social media management application that enables users to create posts, generate AI-powered captions, schedule publishing, and track performance from a single dashboard.",
     features: [
-      "Customisable designs",
-      "Personalised messages",
-      "Digital delivery",
-      "WYSIWYG editor"
+      "AI Caption Generation",
+      "Post Scheduling",
+      "Multi-Platform Publishing",
+      "Performance Analytics"
     ],
-    link: "https://scraaatch.com",
-    year: "2022",
-    users: "1.2k+",
+    link: "https://www.hayon.site",
+    github: "https://github.com/devxtra-community/hayon",
+    year: "2025",
     tech: [
-      { name: "Next.js", icon: "⚡" },
-      { name: "TypeScript", icon: "📘" },
-      { name: "Supabase", icon: "🗄️" },
-      { name: "Resend", icon: "📧" },
-      { name: "PWA", icon: "📱" }
+      { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
+      { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+      { name: "Shadcn", icon: "https://avatars.githubusercontent.com/u/139895814?s=200&v=4" },
+      { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+      { name: "Express", icon: "https://skillicons.dev/icons?i=express" },
+      { name: "AWS", icon: "https://skillicons.dev/icons?i=aws" },
+      { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
+      { name: "Redis", icon: "https://skillicons.dev/icons?i=redis" },
+      { name: "RabbitMQ", icon: "https://skillicons.dev/icons?i=rabbitmq" },
+      { name: "Gemini API", icon: "https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" }
     ]
   },
   {
-    id: "anass",
-    title: "AnAss",
-    description: "Trackers, wishlists, todos, calendar, shopping lists and more.",
-    icon: "🦊",
-    gradient: "bg-gradient-to-br from-purple-500 to-purple-700",
-    about: "A comprehensive personal organization tool that helps users manage various aspects of their daily life through trackers, wishlists, todos, calendars, and shopping lists.",
+    id: "LitBay",
+    title: "LitBay",
+    description: "Browse, search, and purchase books online with secure authentication and admin management.",
+    icon: LitBayLogo,
+    gradient: "bg-[#6d3410]",
+    about: "A mini e-commerce application for books that allows users to explore products, place orders, and track purchases, while admins manage inventory, categories, and orders through a dedicated dashboard.",
     features: [
-      "Multiple list types",
-      "Calendar integration",
-      "Cross-device sync",
-      "Offline support"
+      "Product Search & Filter",
+      "Secure Authentication",
+      "Order Management",
+      "Admin Dashboard"
     ],
-    year: "2023",
+    link: "https://litbay.hafzism.com",
+    github: "https://github.com/hafzism/litbay",
+    year: "2025",
     tech: [
-      { name: "React", icon: "⚛️" },
-      { name: "TypeScript", icon: "📘" },
-      { name: "Firebase", icon: "🔥" }
+      { name: "React", icon: "https://skillicons.dev/icons?i=react" },
+      { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+      { name: "Express.js", icon: "https://skillicons.dev/icons?i=express" },
+      { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
+      { name: "AWS", icon: "https://skillicons.dev/icons?i=aws" },
+      { name: "Nginx", icon: "https://skillicons.dev/icons?i=nginx" },
+      { name: "Tailwind CSS", icon: "https://skillicons.dev/icons?i=tailwind" }
     ]
   },
   {
-    id: "daily-story",
-    title: "Daily Story",
-    description: "A platform where the world collaborates on a new short story, from scratch, every 24 hours.",
-    icon: "📖",
-    gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700",
-    about: "A collaborative writing platform that brings together writers from around the world to create unique short stories. Each day, a new story begins, and contributors add their paragraphs.",
+    id: "NearBuy",
+    title: "NearBuy",
+    description: "Discover products from nearby stores with support for users, shops, delivery partners, and admins.",
+    icon: NearBuyLogo,
+    gradient: "bg-[#3ca4d5]",
+    about: "A product discovery platform that connects users with local shops, allowing them to browse nearby products, locate stores, and request deliveries, while shop owners, delivery partners, and admins manage their respective workflows through dedicated views.",
     features: [
-      "Daily story reset",
-      "Community voting",
-      "Story archives",
-      "Writer profiles"
+      "Local Product Discovery",
+      "Store Location Mapping",
+      "Multi-Role Access",
+      "Delivery Requests"
     ],
-    year: "2023",
-    tech: [
-      { name: "Next.js", icon: "⚡" },
-      { name: "Prisma", icon: "🔷" },
-      { name: "PostgreSQL", icon: "🐘" }
-    ]
-  },
-  {
-    id: "zod-json-schema-builder",
-    title: "Zod & JSON Schema Builder",
-    description: "Build your schema visually and get both JSON Schema and Zod validation code.",
-    icon: "🔧",
-    gradient: "bg-gradient-to-br from-rose-500 to-rose-700",
-    about: "A visual schema builder that helps developers create both JSON Schema and Zod validation code. Perfect for API design and form validation.",
-    features: [
-      "Visual builder",
-      "Dual output",
-      "Type inference",
-      "Export options"
-    ],
+    link: "https://nearbuy.hafzism.com",
+    github: "https://github.com/hafzism/nearbuy",
     year: "2024",
     tech: [
-      { name: "React", icon: "⚛️" },
-      { name: "Zod", icon: "✓" },
-      { name: "TypeScript", icon: "📘" }
+      { name: "Django", icon: "https://skillicons.dev/icons?i=django" },
+      { name: "Python", icon: "https://skillicons.dev/icons?i=py" },
+      { name: "MySQL", icon: "https://skillicons.dev/icons?i=mysql" },
+      { name: "Flutter", icon: "https://skillicons.dev/icons?i=flutter" },
+      { name: "Render", icon: "https://avatars.githubusercontent.com/u/42682871?s=200&v=4" }
+    ]
+  },
+  {
+    id: "scrybe",
+    title: "Scrybe",
+    description: "Write, publish, and explore posts with text and images in a public blogging platform.",
+    icon: scrybeLogo,
+    gradient: "bg-[#0f172b]",
+    about: "A lightweight blogging application that allows users to authenticate, create posts with text and images, explore content from other users, and view individual author profiles along with their published posts.",
+    features: [
+      "User Authentication",
+      "Post Creation",
+      "Public Feed",
+      "Author Profiles"
+    ],
+    link: "https://scrybe.hafzism.com",
+    github: "https://github.com/hafzism/scrybe",
+    year: "2025",
+    tech: [
+      { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
+      { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+      { name: "JWT", icon: "https://user-images.githubusercontent.com/5418178/177059352-fe91dcd5-e17b-4103-88ae-70d6d396cf85.png" },
+      { name: "Tailwind CSS", icon: "https://skillicons.dev/icons?i=tailwind" },
+      { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
+      { name: "Vercel", icon: "https://skillicons.dev/icons?i=vercel" }
     ]
   }
 ];

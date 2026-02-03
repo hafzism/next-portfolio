@@ -2,13 +2,14 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Calendar, Users, Check } from "lucide-react";
+import { ArrowLeft, ExternalLink, Calendar, Users, Check, Github } from "lucide-react";
 import { motion } from "framer-motion";
 import { projects } from "@/data/projects";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useProjectTransition } from "@/context/ProjectTransitionContext";
 import { useTheme } from "next-themes";
+import Image, { StaticImageData } from "next/image";
 
 interface ProjectDetailProps {
     onBack?: () => void;
@@ -17,12 +18,12 @@ interface ProjectDetailProps {
 const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
     const { id } = useParams<{ id: string }>();
     const router = useRouter();
-    const { theme, setTheme } = useTheme();
+    const { resolvedTheme } = useTheme();
     const { endTransition } = useProjectTransition();
-    // Clean up unused state reference if I removed it fully in previous step
-    // Actually, I removed the logic block, but I need to keep the cleanup effect.
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         // End transition after component mounts
         const timer = setTimeout(() => {
             endTransition();
@@ -36,11 +37,9 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
 
     const otherProjects = projects.filter((p) => p.id !== id).slice(0, 3);
 
-    const isDark = theme === "dark";
+    const isDark = resolvedTheme === "dark";
 
-    const toggleTheme = () => {
-        setTheme(isDark ? "light" : "dark");
-    };
+    if (!mounted) return null;
 
     if (!project) {
         return (
@@ -83,10 +82,10 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                 <motion.div
                     layoutId={`project-card-${id}`}
                     className={cn(
-                        "rounded-2xl md:rounded-[2rem] p-4 md:p-5 lg:p-6 mb-4 md:mb-6",
-                        "min-h-[140px] md:min-h-[190px] flex flex-col justify-center",
-                        "border shadow-2xl",
-                        isDark ? 'border-white/10 shadow-black/40' : 'border-black/5 shadow-slate-200/50',
+                        "rounded-[2rem] p-6 md:p-8 mb-6 md:mb-10",
+                        "min-h-[160px] md:min-h-[200px] flex flex-col justify-center relative overflow-hidden",
+                        "shadow-2xl",
+                        isDark ? 'shadow-black/40' : 'shadow-slate-200/50',
                         project.gradient
                     )}
                     transition={{
@@ -95,23 +94,39 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                         damping: 30,
                     }}
                 >
-                    <div className="flex flex-col md:flex-row items-center md:items-center gap-4 md:gap-6">
+                    {/* Texture Overlay */}
+                    <div className="grain-overlay opacity-[0.08]" />
+
+                    <div className="flex flex-row items-center gap-6 md:gap-8 relative z-10">
                         <motion.div
                             layoutId={`project-icon-${id}`}
-                            className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-xl md:rounded-[1rem] bg-card/20 backdrop-blur-sm flex items-center justify-center text-xl md:text-2xl lg:text-3xl shrink-0"
+                            className={cn(
+                                "w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-2xl md:rounded-[1.5rem] flex items-center justify-center shrink-0 overflow-hidden",
+                                (id === 'hayon' || id === 'NearBuy') ? 'bg-white' :
+                                    (id === 'scrybe') ? 'bg-[#1e3876]' :
+                                        (id === 'LitBay') ? 'bg-[#be9971]' : 'bg-black/10'
+                            )}
                         >
-                            {project.icon}
+                            {typeof project.icon === 'string' ? (
+                                project.icon
+                            ) : (
+                                <Image
+                                    src={project.icon as StaticImageData}
+                                    alt={project.title}
+                                    className="w-full h-full object-contain p-4 md:p-6"
+                                />
+                            )}
                         </motion.div>
-                        <div className="flex-1 min-w-0 text-center md:text-left">
+                        <div className="flex-1 min-w-0 text-left">
                             <motion.h3
                                 layoutId={`project-title-${id}`}
-                                className="text-base md:text-xl font-semibold text-white mb-1 font-serif"
+                                className="text-base md:text-2xl font-bold text-white mb-3 md:mb-4 font-serif tracking-tight"
                             >
                                 {project.title}
                             </motion.h3>
                             <motion.p
                                 layoutId={`project-desc-${id}`}
-                                className="text-sm md:text-base text-white/80 line-clamp-2"
+                                className="text-xs md:text-base text-white/90 line-clamp-2 max-w-xl font-medium leading-relaxed"
                             >
                                 {project.description}
                             </motion.p>
@@ -179,6 +194,17 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                                         <span className="truncate">{project.link}</span>
                                     </a>
                                 )}
+                                {project.github && (
+                                    <a
+                                        href={project.github}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground hover:text-foreground transition-colors"
+                                    >
+                                        <Github className="w-3 h-3 md:w-4 md:h-4" />
+                                        <span className="truncate">Source Code</span>
+                                    </a>
+                                )}
                                 <div className="flex items-center gap-2 text-xs md:text-sm text-muted-foreground">
                                     <Calendar className="w-3 h-3 md:w-4 md:h-4" />
                                     {project.year}
@@ -198,15 +224,19 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                                 Tech
                             </h3>
                             <div className="flex flex-wrap gap-1 md:gap-2">
-                                {project.tech.slice(0, 6).map((tech, index) => (
+                                {project.tech.map((tech, index) => (
                                     <motion.span
                                         key={tech.name}
-                                        className="inline-flex items-center gap-1 px-2 py-1 bg-secondary text-secondary-foreground rounded-full text-[10px] md:text-xs font-medium"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-secondary text-secondary-foreground rounded-full text-[10px] md:text-xs font-medium"
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         transition={{ delay: 0.6 + index * 0.05 }}
                                     >
-                                        <span>{tech.icon}</span>
+                                        <img
+                                            src={tech.icon}
+                                            alt={tech.name}
+                                            className="w-3.5 h-3.5 md:w-4 md:h-4 object-contain"
+                                        />
                                         {tech.name}
                                     </motion.span>
                                 ))}
@@ -225,7 +255,7 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                     <h3 className="text-sm md:text-lg lg:text-xl font-semibold text-foreground mb-3 md:mb-4 font-serif">
                         More Projects
                     </h3>
-                    <div className="flex gap-2 md:gap-4 overflow-x-auto py-4 px-2 -mx-2 no-scrollbar">
+                    <div className="flex gap-4 md:gap-6 overflow-x-auto py-4 px-2 -mx-2 no-scrollbar">
                         {otherProjects.map((otherProject, index) => (
                             <motion.div
                                 key={otherProject.id}
@@ -236,11 +266,21 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                                 <Link
                                     href={`/projects/${otherProject.id}`}
                                     className={cn(
-                                        "shrink-0 w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl md:rounded-2xl flex items-center justify-center text-2xl md:text-3xl lg:text-4xl transition-transform hover:scale-110",
-                                        otherProject.gradient
+                                        "shrink-0 w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl md:rounded-2xl flex items-center justify-center transition-transform hover:scale-110 overflow-hidden shadow-sm",
+                                        (otherProject.id === 'hayon' || otherProject.id === 'NearBuy') ? 'bg-white' :
+                                            (otherProject.id === 'scrybe') ? 'bg-[#1e3876]' :
+                                                (otherProject.id === 'LitBay') ? 'bg-[#be9971]' : otherProject.gradient
                                     )}
                                 >
-                                    {otherProject.icon}
+                                    {typeof otherProject.icon === 'string' ? (
+                                        otherProject.icon
+                                    ) : (
+                                        <Image
+                                            src={otherProject.icon as StaticImageData}
+                                            alt={otherProject.title}
+                                            className="w-full h-full object-contain p-2 md:p-3"
+                                        />
+                                    )}
                                 </Link>
                             </motion.div>
                         ))}

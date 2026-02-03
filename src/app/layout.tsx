@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Atkinson_Hyperlegible, Fraunces } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import SideNav from "@/components/SideNav";
 import Header from "@/components/Header";
 import GlobalBackground from "@/components/GlobalBackground";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const atkinson = Atkinson_Hyperlegible({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-atkinson"
+});
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces"
+});
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -21,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} antialiased`}>
+      <body className={`${atkinson.variable} ${fraunces.variable} antialiased`}>
         <Providers>
           <GlobalBackground />
           <SideNav />

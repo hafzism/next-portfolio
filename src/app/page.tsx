@@ -59,14 +59,17 @@ const Index = () => {
                 description="Freelance, Internship & Education."
                 className="h-full min-h-[80px] md:min-h-[100px] lg:min-h-[120px] group"
               >
-                <PeekingMemoji />
+                {/* <PeekingMemoji /> */}
               </BentoCard>
             </Link>
           </div>
 
           {/* Projects Card */}
           <div className="opacity-0 animate-fade-in-up animation-delay-300 sm:col-span-1">
-            <Link href="/projects" className="block h-full">
+            <div
+              onClick={() => window.location.href = '/projects'}
+              className="block h-full cursor-pointer"
+            >
               <BentoCard
                 icon={FolderOpen}
                 title="Projects"
@@ -75,13 +78,12 @@ const Index = () => {
                 verticalAlign="bottom"
               >
                 <div className="w-full h-full flex items-center justify-center -mt-2">
-                  {/* Removed absolute positioning for header elements since we are strictly flexing now, but marquee needs container */}
-                  <div className="w-full overflow-hidden">
+                  <div className="w-full overflow-hidden" onClick={(e) => e.stopPropagation()}>
                     <ProjectMarquee />
                   </div>
                 </div>
               </BentoCard>
-            </Link>
+            </div>
           </div>
 
           {/* Contact Card */}

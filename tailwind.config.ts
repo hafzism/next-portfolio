@@ -18,6 +18,10 @@ export default {
             },
         },
         extend: {
+            fontFamily: {
+                sans: ["var(--font-atkinson)", "sans-serif"],
+                serif: ["var(--font-fraunces)", "serif"],
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",

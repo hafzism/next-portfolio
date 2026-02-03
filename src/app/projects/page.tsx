@@ -8,6 +8,7 @@ import { projects } from "@/data/projects";
 import { useState, useEffect, useRef } from "react";
 import { useProjectTransition } from "@/context/ProjectTransitionContext";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 interface StickyProjectCardProps {
     project: any;
@@ -56,9 +57,9 @@ const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardP
                                 <Plus className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 text-muted-foreground" />
                             </div>
                         )}
-                        gradient={isDark ? 'bg-slate-900 shadow-2xl shadow-black/40 border border-white/10' : 'bg-slate-200 shadow-2xl shadow-slate-200/50 border border-black/5'}
+                        gradient={isDark ? 'bg-[#3d2b1f] shadow-2xl shadow-black/40' : 'bg-[#3d2b1f] shadow-2xl shadow-slate-200/50'}
                         index={index}
-                        className="border-2 border-dashed"
+                        className="border-2 border-dashed border-white/10"
                     />
                 ) : (
                     <ProjectCard
@@ -68,13 +69,10 @@ const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardP
                         icon={project.icon}
                         gradient={project.gradient}
                         index={index}
-                        className={`
-                            border shadow-2xl
-                            ${isDark
-                                ? 'border-white/10 shadow-black/40' // Dark mode card
-                                : 'border-black/5 shadow-slate-200/50' // Light mode card
-                            }
-                        `}
+                        className={cn(
+                            "shadow-2xl",
+                            isDark ? 'shadow-black/40' : 'shadow-slate-200/50'
+                        )}
                     />
                 )}
             </motion.div>
@@ -83,7 +81,7 @@ const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardP
 };
 
 const Projects = () => {
-    const { theme, setTheme } = useTheme();
+    const { resolvedTheme } = useTheme();
     const { transitionState, endTransition } = useProjectTransition();
     const [mounted, setMounted] = useState(false);
 
@@ -93,8 +91,7 @@ const Projects = () => {
     }, []);
 
     if (!mounted) return null;
-
-    const isDark = theme === "dark";
+    const isDark = resolvedTheme === "dark";
     const allProjects = [...projects, { id: 'coming-soon', isComingSoon: true }];
 
     return (
