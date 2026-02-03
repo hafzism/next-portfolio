@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useScroll, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useSpring, useInView, useTransform } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
@@ -72,15 +72,16 @@ const experienceData = [
     }
 ];
 
-const ExperienceCard = ({ item, index }: { item: typeof experienceData[0], index: number }) => {
+const ExperienceCard = ({ item, index, containerRef }: { item: typeof experienceData[0], index: number, containerRef: React.RefObject<HTMLDivElement | null> }) => {
     const { theme } = useTheme();
     const isDark = theme === "dark";
     const dotRef = useRef(null);
 
     // Activate dot when it reaches the upper part of the viewport (where the line is growing)
     const isReached = useInView(dotRef, {
+        root: containerRef,
         once: false,
-        margin: "0px 0px -90% 0px" // Adjust this to time it with the line growth
+        margin: "0px 0px -70% 0px" // Adjusted for better activation timing
     });
 
     const hoverBgColors = {
@@ -90,9 +91,9 @@ const ExperienceCard = ({ item, index }: { item: typeof experienceData[0], index
     };
 
     const activeDotColors = {
-        blue: "bg-blue-500 border-blue-500/50 scale-125 shadow-[0_0_10px_rgba(59,130,246,0.5)]",
-        purple: "bg-purple-500 border-purple-500/50 scale-125 shadow-[0_0_10px_rgba(168,85,247,0.5)]",
-        orange: "bg-orange-500 border-orange-500/50 scale-125 shadow-[0_0_10px_rgba(249,115,22,0.5)]",
+        blue: "bg-blue-500 border-blue-500/50 scale-125 shadow-[0_0_15px_rgba(59,130,246,0.6)]",
+        purple: "bg-purple-500 border-purple-500/50 scale-125 shadow-[0_0_15px_rgba(168,85,247,0.6)]",
+        orange: "bg-orange-500 border-orange-500/50 scale-125 shadow-[0_0_15px_rgba(249,115,22,0.6)]",
     };
 
     const dotColors = {
@@ -103,11 +104,11 @@ const ExperienceCard = ({ item, index }: { item: typeof experienceData[0], index
 
     return (
         <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-            className="relative pl-12 pb-8 group last:pb-0"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.7, delay: index * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="relative pl-12 pb-12 group last:pb-0"
         >
             {/* Dot on the timeline */}
             <div
@@ -181,19 +182,13 @@ const ExperienceContent = () => {
                 <div className="max-w-3xl mx-auto pl-4 md:pl-12">
                     {/* Timeline Container */}
                     <div className="relative">
-                        {/* Static Vertical Line */}
-                        <div className="absolute left-[5.5px] top-2 bottom-0 w-[1px] bg-border/40 z-0" />
-
-                        {/* Animated Vertical Line */}
-                        <motion.div
-                            style={{ scaleY, transformOrigin: "top" }}
-                            className="absolute left-[5.5px] top-2 bottom-0 w-[1px] bg-foreground z-10"
-                        />
+                        {/* Static Vertical Line (the track) */}
+                        <div className="absolute left-[5.5px] top-2 bottom-0 w-[1px] bg-border z-0" />
 
                         {/* Experience Items */}
                         <div className="flex flex-col">
                             {experienceData.map((item, index) => (
-                                <ExperienceCard key={item.id} item={item} index={index} />
+                                <ExperienceCard key={item.id} item={item} index={index} containerRef={containerRef} />
                             ))}
                         </div>
                     </div>

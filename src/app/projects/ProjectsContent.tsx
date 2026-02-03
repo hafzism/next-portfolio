@@ -18,6 +18,7 @@ interface StickyProjectCardProps {
 
 const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
+    const { transitionState } = useProjectTransition();
 
     // We target the CONTAINER for scroll progress to drive the scale of the inner card
     const { scrollYProgress } = useScroll({
@@ -27,6 +28,9 @@ const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardP
 
     // Scale down to 0.95 as the card sits at the top and the next one comes up
     const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+
+    // Check if THIS specific card is currently transitioning
+    const isTransitioning = transitionState.selectedProjectId === project.id;
 
     // Calculate top offset: 120px is a safe header height approximation + slight graduation
     const topOffset = 120 + (index * 10);
@@ -42,7 +46,10 @@ const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardP
             }}
         >
             {/* ANIMATED CONTENT: Handles the depth effect */}
-            <motion.div style={{ scale }} className="relative origin-top">
+            <motion.div
+                style={{ scale: isTransitioning ? 1 : scale }}
+                className="relative origin-top"
+            >
                 {/* Shadow for depth when stacking */}
                 <div className="absolute inset-0 -z-10 bg-black/20 blur-xl translate-y-8 rounded-[2rem]" />
 

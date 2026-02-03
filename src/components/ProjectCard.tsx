@@ -30,10 +30,7 @@ const ProjectCard = ({ id, title, description, icon, gradient, index, className 
       const rect = cardRef.current.getBoundingClientRect();
       startTransition(id, rect);
 
-      // Small delay to allow the animation to start
-      setTimeout(() => {
-        router.push(`/projects/${id}`);
-      }, 10); // Minimal delay to let react state update, but fast enough to feel instant
+      router.push(`/projects/${id}`);
     }
   };
 

@@ -37,11 +37,10 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
 
     const otherProjects = projects.filter((p) => p.id !== id).slice(0, 3);
 
-    const isDark = resolvedTheme === "dark";
-
-    if (!mounted) return null;
+    const isDark = mounted ? resolvedTheme === "dark" : false;
 
     if (!project) {
+        if (!mounted) return null; // Still show nothing if not found and not mounted
         return (
             <div className="min-h-screen bg-background flex items-center justify-center">
                 <div className="text-center">
@@ -81,6 +80,8 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                 {/* Project Header Card - Shared Element */}
                 <motion.div
                     layoutId={`project-card-${id}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     className={cn(
                         "rounded-[2rem] p-6 md:p-8 mb-6 md:mb-10",
                         "min-h-[160px] md:min-h-[200px] flex flex-col justify-center relative overflow-hidden",

@@ -37,7 +37,7 @@ const AboutContent = () => {
                 <div className="w-full max-w-2xl mx-auto">
                     {/* About Me Section */}
                     <section className="mb-6 md:mb-8">
-                        <h2 className="text-xl md:text-2xl lg:text-3xl font-serif text-foreground mb-4 md:mb-6">
+                        <h2 className="text-lg md:text-xl lg:text-2xl font-serif text-foreground mb-4 md:mb-6">
                             About Me
                         </h2>
                         <div className="text-sm md:text-base lg:text-lg text-muted-foreground space-y-4 md:space-y-6 leading-relaxed">
@@ -79,7 +79,7 @@ const AboutContent = () => {
 
                     {/* Tech Stack Section */}
                     <section>
-                        <h2 className="text-xl md:text-2xl lg:text-3xl font-serif text-foreground mb-4 md:mb-6">
+                        <h2 className="text-lg md:text-xl lg:text-2xl font-serif text-foreground mb-4 md:mb-6">
                             Tech Stack
                         </h2>
                         <div className="space-y-0.5 md:space-y-1">
