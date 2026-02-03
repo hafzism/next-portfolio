@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Send, Linkedin, Github, Instagram, Mail } from "lucide-react";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 const Contact = () => {
     const { theme, setTheme } = useTheme();
@@ -14,6 +15,7 @@ const Contact = () => {
         company: "",
         message: "",
     });
+    const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
     useEffect(() => {
         setMounted(true);
@@ -29,9 +31,51 @@ const Contact = () => {
         setTheme(isDark ? "light" : "dark");
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
+
+        if (!formData.name || !formData.email || !formData.message) {
+            return;
+        }
+
+        setStatus("sending");
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
+                    ...formData,
+                    subject: `New Portfolio Contact: ${formData.name}`,
+                    from_name: formData.name,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                setStatus("success");
+                setFormData({
+                    name: "",
+                    email: "",
+                    company: "",
+                    message: "",
+                });
+
+                // Reset to idle after 5 seconds
+                setTimeout(() => setStatus("idle"), 5000);
+            } else {
+                console.error("Web3Forms Error:", result);
+                setStatus("error");
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
+            setStatus("error");
+        }
     };
 
     return (
@@ -55,6 +99,7 @@ const Contact = () => {
                                 type="text"
                                 placeholder="Jon Snow"
                                 value={formData.name}
+                                required
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 className="w-full px-3 py-2 md:py-2.5 bg-card border border-border rounded-lg text-sm md:text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                             />
@@ -68,6 +113,7 @@ const Contact = () => {
                                 type="email"
                                 placeholder="jon.snow@stark.com"
                                 value={formData.email}
+                                required
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                 className="w-full px-3 py-2 md:py-2.5 bg-card border border-border rounded-lg text-sm md:text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                             />
@@ -93,6 +139,7 @@ const Contact = () => {
                             <textarea
                                 placeholder="Winter is coming..."
                                 value={formData.message}
+                                required
                                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                                 rows={3}
                                 className="w-full px-3 py-2 md:py-2.5 bg-card border border-border rounded-lg text-sm md:text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none"
@@ -101,9 +148,24 @@ const Contact = () => {
 
                         <button
                             type="submit"
-                            className="w-full py-2.5 md:py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                            disabled={status === "sending" || status === "success"}
+                            className={cn(
+                                "w-full py-2.5 md:py-3 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 font-medium",
+                                status === "idle" && "bg-primary text-primary-foreground hover:opacity-90",
+                                status === "sending" && "bg-primary/50 text-primary-foreground cursor-wait",
+                                status === "success" && "bg-green-600 text-white",
+                                status === "error" && "bg-red-600 text-white"
+                            )}
                         >
-                            <Send className="w-4 h-4" />
+                            {status === "idle" && (
+                                <>
+                                    <span>Send Message</span>
+                                    <Send className="w-4 h-4" />
+                                </>
+                            )}
+                            {status === "sending" && <span>Sending...</span>}
+                            {status === "success" && <span>Message Sent!</span>}
+                            {status === "error" && <span>Error! Please Try Again</span>}
                         </button>
                     </form>
 
