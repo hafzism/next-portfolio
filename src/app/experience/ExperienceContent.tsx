@@ -174,12 +174,10 @@ const ExperienceContent = () => {
         setMounted(true);
     }, []);
 
-    if (!mounted) return null;
-
     return (
         <div ref={containerRef} className="h-full relative flex flex-col font-sans overflow-y-auto no-scrollbar scroll-smooth">
-            <main className="flex-1 px-4 md:px-8 pb-32 pt-10 md:pt-14">
-                <div className="max-w-3xl mx-auto pl-4 md:pl-12">
+            <main className="flex-1 px-6 md:px-12 pb-32 pt-10 md:pt-14">
+                <div className="max-w-3xl mx-auto pl-6 md:pl-14">
                     {/* Timeline Container */}
                     <div className="relative">
                         {/* Static Vertical Line (the track) */}

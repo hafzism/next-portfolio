@@ -20,7 +20,7 @@ const ChatSection = () => {
       {/* Floating Chat Interface fixed at bottom */}
       <div className="fixed bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 w-full max-w-8xl px-4 md:px-6 z-40">
 
-        <h2 className="text-base md:text-2xl text-center text-muted-foreground mb-3 opacity-90 shadow-black/50 text-shadow">
+        <h2 className="hidden lg:block text-base md:text-2xl text-center text-muted-foreground mb-3 opacity-90 shadow-black/50 text-shadow">
           What's on your mind?
         </h2>
 

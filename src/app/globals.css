@@ -79,8 +79,8 @@
     --input: 30 10% 20%;
     --ring: 40 20% 80%;
 
-    --card-shadow: 0 2px 20px -4px hsl(0 0% 0% / 0.3);
-    --card-shadow-hover: 0 8px 30px -4px hsl(0 0% 0% / 0.4);
+    --card-shadow: 0 4px 20px -4px hsl(0 0% 0% / 0.1);
+    --card-shadow-hover: 0 12px 30px -4px hsl(0 0% 0% / 0.15);
     --bead-color: 40 20% 70%;
   }
 }
@@ -95,6 +95,8 @@
   body {
     @apply bg-background text-foreground antialiased flex flex-col;
     font-family: var(--font-atkinson), sans-serif;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
   }
 
   /* ... rest of base ... */
@@ -135,6 +137,16 @@
 
   .marquee-content {
     @apply flex flex-nowrap w-max animate-marquee;
+  }
+
+  .marquee-container-vertical {
+    @apply overflow-hidden relative h-full;
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  }
+
+  .marquee-content-vertical {
+    @apply flex flex-col h-max animate-marquee-vertical;
   }
 
   .marquee-content:hover {

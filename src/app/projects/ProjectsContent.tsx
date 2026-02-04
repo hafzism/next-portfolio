@@ -50,8 +50,11 @@ const StickyProjectCard = ({ project, index, total, isDark }: StickyProjectCardP
                 style={{ scale: isTransitioning ? 1 : scale }}
                 className="relative origin-top"
             >
-                {/* Shadow for depth when stacking */}
-                <div className="absolute inset-0 -z-10 bg-black/20 blur-xl translate-y-8 rounded-[2rem]" />
+                {/* Shadow for depth when stacking - theme aware */}
+                <div className={cn(
+                    "absolute inset-0 -z-10 blur-xl translate-y-8 rounded-[2rem]",
+                    isDark ? "bg-black/40" : "bg-black/5"
+                )} />
 
                 {project.isComingSoon ? (
                     <ProjectCard
@@ -103,7 +106,7 @@ const ProjectsContent = () => {
     return (
         <div className="h-full relative overflow-hidden flex flex-col font-sans selection:bg-primary/20 bg-background/0">
             {/* SCROLL CONTAINER */}
-            <main className="flex-1 overflow-y-auto no-scrollbar scroll-smooth relative z-10 px-4 md:px-6 pb-20">
+            <main className="flex-1 overflow-y-auto no-scrollbar scroll-smooth relative z-10 px-6 md:px-10 pb-20">
                 <div className="max-w-2xl mx-auto pt-8 pb-32">
                     {allProjects.map((project: any, index: number) => (
                         <StickyProjectCard

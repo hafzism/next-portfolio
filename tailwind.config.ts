@@ -85,6 +85,10 @@ export default {
                     "0%": { transform: "translateX(0)" },
                     "100%": { transform: "translateX(-50%)" },
                 },
+                "marquee-vertical": {
+                    "0%": { transform: "translateY(-50%)" },
+                    "100%": { transform: "translateY(0)" },
+                },
                 "fade-in-up": {
                     "0%": { opacity: "0", transform: "translateY(20px)" },
                     "100%": { opacity: "1", transform: "translateY(0)" },
@@ -94,6 +98,7 @@ export default {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
                 "marquee": "marquee 25s linear infinite",
+                "marquee-vertical": "marquee-vertical 20s linear infinite",
                 "fade-in-up": "fade-in-up 0.6s ease-out forwards",
             },
         },

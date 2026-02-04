@@ -9,8 +9,8 @@ const ChatBubbles = () => {
   ];
 
   return (
-    <div className="absolute top-4 right-4 w-28 h-40 overflow-hidden pointer-events-none select-none mask-fade-top scale-125 origin-top-right">
-      <div className="relative w-full h-full flex flex-col justify-end pb-2">
+    <div className="absolute top-4 right-4 w-24 sm:w-28 h-32 sm:h-40 overflow-hidden pointer-events-none select-none mask-fade-top scale-90 sm:scale-110 md:scale-125 origin-top-right">
+      <div className="relative w-full h-full flex flex-col justify-end pb-1 sm:pb-2">
         {bubbles.map((bubble, index) => (
           <div
             key={index}

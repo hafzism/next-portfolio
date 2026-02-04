@@ -58,7 +58,7 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
 
             {/* Fixed Header */}
 
-            <main className="flex-1 container max-w-2xl mx-auto px-4 md:px-6 relative z-10 overflow-y-auto pb-16 md:pb-4 no-scrollbar">
+            <main className="flex-1 container max-w-2xl mx-auto px-6 md:px-10 relative z-10 overflow-y-auto pb-16 md:pb-4 no-scrollbar">
                 {/* Back Link */}
                 <motion.button
                     onClick={() => {
@@ -121,7 +121,7 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                         <div className="flex-1 min-w-0 text-left">
                             <motion.h3
                                 layoutId={`project-title-${id}`}
-                                className="text-base md:text-2xl font-bold text-white mb-3 md:mb-4 font-serif tracking-tight"
+                                className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4 font-serif tracking-tight"
                             >
                                 {project.title}
                             </motion.h3>

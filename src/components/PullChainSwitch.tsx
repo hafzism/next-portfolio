@@ -5,33 +5,6 @@ interface PullChainSwitchProps {
     onToggle: () => void;
 }
 
-// Simple synthesized sound effect
-const playClickSound = (isHighPitch: boolean) => {
-    try {
-        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioContext) return;
-
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        // Mechanical switch sound
-        osc.type = "triangle";
-        osc.frequency.setValueAtTime(isHighPitch ? 800 : 600, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.1);
-
-        gain.gain.setValueAtTime(0.5, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-
-        osc.start();
-        osc.stop(ctx.currentTime + 0.15);
-    } catch (e) {
-        // Ignore audio errors
-    }
-};
 
 const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
     // Physics State
@@ -43,8 +16,24 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
     const startPos = useRef({ x: 0, y: 0 });
     const audioLocked = useRef(false);
 
+    const [chainLinks, setChainLinks] = useState(16);
+
+    useEffect(() => {
+        const updateLinks = () => {
+            if (window.innerWidth < 640) { // mobile
+                setChainLinks(10);
+            } else if (window.innerWidth < 1024) { // tablet
+                setChainLinks(13);
+            } else {
+                setChainLinks(16);
+            }
+        };
+        updateLinks();
+        window.addEventListener('resize', updateLinks);
+        return () => window.removeEventListener('resize', updateLinks);
+    }, []);
+
     // Constants 
-    const chainLinks = 16;
     const triggerThreshold = 50;
     const maxPull = 80;
 
@@ -96,7 +85,6 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
 
         if (position.y > triggerThreshold) {
             triggerHaptic([15, 50, 15]);
-            playClickSound(!isDark);
             onToggle();
         } else {
             triggerHaptic(5);
@@ -104,7 +92,7 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
 
         setPosition({ x: 0, y: 0 });
         setTimeout(() => setIsRecovering(false), 2000);
-    }, [isDragging, position.y, isDark, onToggle]);
+    }, [isDragging, position.y, onToggle]);
 
     useEffect(() => {
         const onMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
@@ -180,7 +168,7 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
 
                 {/* Mount Base */}
                 <div className="relative z-20">
-                    <div className={`w-6 h-3 rounded-b-md ${colors.mount}`} />
+                    <div className={`w-5 h-2.5 md:w-6 md:h-3 rounded-b-md ${colors.mount}`} />
                     <div className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-black/20" />
                 </div>
 
@@ -194,7 +182,7 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
                         >
                             {/* Card-Colored Bead */}
                             <div
-                                className={`w-2 h-2 rounded-full relative z-10 ${colors.bead}`}
+                                className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full relative z-10 ${colors.bead}`}
                                 style={{
                                     // Dynamic shadow based on theme
                                     boxShadow: colors.beadShadow
@@ -202,7 +190,7 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
                             />
                             {/* Connector Pin */}
                             {i < chainLinks - 1 && (
-                                <div className={`w-0.5 h-2 -my-1 ${colors.connector}`} />
+                                <div className={`w-px md:w-0.5 h-1.5 md:h-2 -my-0.5 md:-my-1 ${colors.connector}`} />
                             )}
                         </div>
                     ))}
@@ -217,14 +205,14 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
                     }}
                 >
                     {/* Connector to first bead */}
-                    <div className={`w-0.5 h-2 mx-auto -mt-1 ${colors.connector}`} />
+                    <div className={`w-px md:w-0.5 h-1.5 md:h-2 mx-auto -mt-0.5 md:-mt-1 ${colors.connector}`} />
 
                     {/* Handle */}
                     <div
-                        className={`w-3.5 h-8 rounded-full flex items-center justify-center relative ${colors.handle}`}
+                        className={`w-2.5 h-6 md:w-3.5 md:h-8 rounded-full flex items-center justify-center relative ${colors.handle}`}
                     >
                         {/* Shine highlight */}
-                        <div className={`absolute top-1 left-1 w-1 h-3 rounded-full blur-[0.5px] ${colors.handleHighlight}`} />
+                        <div className={`absolute top-0.5 left-0.5 w-0.5 h-2 md:top-1 md:left-1 md:w-1 md:h-3 rounded-full blur-[0.5px] ${colors.handleHighlight}`} />
                     </div>
                 </div>
 
