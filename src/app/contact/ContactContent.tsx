@@ -74,8 +74,8 @@ const ContactContent = () => {
     return (
         <div className="h-full flex flex-col overflow-y-auto relative transition-colors duration-500 no-scrollbar bg-background/0">
             {/* Main Content */}
-            <main className="flex-1 flex items-center justify-center px-4 pb-16 md:pb-8 relative z-10">
-                <div className="w-full max-w-md">
+            <main className="flex-1 flex items-center justify-center px-4 md:px-8 pb-16 md:pb-8 relative z-10">
+                <div className="w-full max-w-[90%] md:max-w-md">
                     <h2 className="text-xl md:text-2xl lg:text-3xl font-serif text-foreground mb-4 md:mb-6">
                         Get in Touch
                     </h2>
