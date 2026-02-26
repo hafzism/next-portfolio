@@ -58,7 +58,7 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
 
             {/* Fixed Header */}
 
-            <main className="flex-1 container max-w-2xl mx-auto px-6 md:px-10 relative z-10 overflow-y-auto pb-16 md:pb-4 no-scrollbar">
+            <main className="flex-1 container max-w-2xl mx-auto px-6 md:px-10 relative z-10 overflow-y-auto pb-24 md:pb-4 no-scrollbar">
                 {/* Back Link */}
                 <motion.button
                     onClick={() => {
