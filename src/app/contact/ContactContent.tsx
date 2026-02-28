@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Send, Linkedin, Github, Instagram, Mail } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
 
 const ContactContent = () => {
     const { theme } = useTheme();
@@ -15,6 +16,7 @@ const ContactContent = () => {
         message: "",
     });
     const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -23,6 +25,12 @@ const ContactContent = () => {
     if (!mounted) {
         return null;
     }
+
+    const handleCopyEmail = () => {
+        navigator.clipboard.writeText("thehafzism@gmail.com");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -76,6 +84,8 @@ const ContactContent = () => {
             {/* Main Content */}
             <main className="flex-1 flex items-center justify-center px-4 md:px-8 pb-16 md:pb-8 relative z-10">
                 <div className="w-full max-w-[90%] md:max-w-md">
+                    {/* <div className="w-full max-w-[90%] md:max-w-md lg:max-w-sm"> */}
+
                     <h2 className="text-xl md:text-2xl lg:text-3xl font-serif text-foreground mb-4 md:mb-6">
                         Get in Touch
                     </h2>
@@ -189,13 +199,18 @@ const ContactContent = () => {
 
                     {/* Email Display */}
                     <div className="flex flex-col items-center mt-6">
-                        <a
-                            href="mailto:thehafzism@gmail.com"
-                            className="text-sm md:text-base font-bold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2"
+                        <button
+                            onClick={handleCopyEmail}
+                            className="text-sm md:text-base font-bold text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 group"
+                            title="Copy email to clipboard"
                         >
-                            <Mail className="w-4 h-4" />
-                            thehafzism@gmail.com
-                        </a>
+                            {copied ? (
+                                <Check className="w-4 h-4 text-green-500" />
+                            ) : (
+                                <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                            )}
+                            {copied ? <span className="text-green-500">Copied!</span> : "thehafzism@gmail.com"}
+                        </button>
                     </div>
                 </div>
             </main>
