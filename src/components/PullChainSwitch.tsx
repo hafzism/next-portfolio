@@ -159,7 +159,7 @@ const PullChainSwitch = ({ isDark, onToggle }: PullChainSwitchProps) => {
         >
             {/* Hit Box */}
             <div
-                className="absolute -left-8 -right-8 top-0 h-96 z-10 cursor-grab active:cursor-grabbing"
+                className="absolute -left-8 -right-8 top-0 -bottom-4 z-10 cursor-grab active:cursor-grabbing"
                 onMouseDown={(e) => handleStart(e.clientX, e.clientY)}
                 onTouchStart={(e) => handleStart(e.touches[0].clientX, e.touches[0].clientY)}
             />
