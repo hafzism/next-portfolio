@@ -24,10 +24,10 @@ const BentoCard = ({
 }: BentoCardProps) => {
   return (
     <div
-      className={`bento-card cursor-pointer flex flex-col ${verticalAlign === "bottom" ? "justify-between" : ""} ${className}`}
+      className={`bento-card cursor-pointer flex flex-col ${verticalAlign === "bottom" ? "justify-between" : "justify-end sm:justify-start"} ${className}`}
       onClick={onClick}
     >
-      {verticalAlign === "bottom" && <div className="flex-1 w-full">{children}</div>}
+      {verticalAlign === "bottom" && <div className="flex-1 w-full flex flex-col justify-center">{children}</div>}
 
       {!hideHeader && (
         <div className="relative z-10">

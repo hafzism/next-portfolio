@@ -38,7 +38,7 @@ const HomeContent = () => {
                                 icon={User}
                                 title="About"
                                 description="A bit about myself."
-                                className="h-full min-h-[80px] md:min-h-[100px] lg:min-h-[120px] group"
+                                className="h-full min-h-[90px] sm:min-h-[100px] lg:min-h-[120px] group"
                             >
                                 <WorkLottie />
                             </BentoCard>
@@ -50,7 +50,7 @@ const HomeContent = () => {
                                 icon={Briefcase}
                                 title="My Journey"
                                 description="Freelance, Internship & Education."
-                                className="h-full min-h-[80px] md:min-h-[100px] lg:min-h-[120px] group"
+                                className="h-full min-h-[90px] sm:min-h-[100px] lg:min-h-[120px] group"
                             >
                             </BentoCard>
                         </Link>
@@ -66,12 +66,12 @@ const HomeContent = () => {
                                 icon={FolderOpen}
                                 title="Projects"
                                 description="Personal projects I've been working on."
-                                className="h-full min-h-[90px] sm:min-h-[150px] lg:min-h-[190px]"
+                                className="h-full min-h-[100px] sm:min-h-[150px] lg:min-h-[190px]"
                                 verticalAlign="bottom"
                                 hideHeader={mounted && window.innerWidth < 640}
                             >
                                 {/* Mobile Horizontal Layout */}
-                                <div className="sm:hidden w-full h-full flex items-center justify-between">
+                                <div className="sm:hidden w-full h-full flex items-end justify-between">
                                     <div className="flex flex-col gap-1">
                                         <div className="flex items-center gap-2">
                                             <FolderOpen className="w-5 h-5 text-foreground" strokeWidth={1.5} />
@@ -100,7 +100,7 @@ const HomeContent = () => {
                             icon={Send}
                             title="Contact"
                             description="Email, LinkedIn, carrier pigeon..."
-                            className="h-full min-h-[110px] sm:min-h-[160px] lg:min-h-[190px]"
+                            className="h-full min-h-[100px] sm:min-h-[160px] lg:min-h-[190px]"
                             verticalAlign="bottom"
                         >
                             <div className="w-full h-full flex items-center justify-center -mt-2 mb-4">
