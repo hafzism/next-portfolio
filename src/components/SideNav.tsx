@@ -62,7 +62,7 @@ const SideNav = () => {
                   {/* Active Indicator Background */}
                   {isActive && (
                     <motion.div
-                      layoutId="activeNav"
+                      layoutId="activeNavDesktop"
                       className="absolute inset-0 bg-primary rounded-xl z-10 shadow-lg shadow-primary/25"
                       initial={false}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -94,20 +94,34 @@ const SideNav = () => {
             (item.path === "/contact" && pathname === "/contact");
 
           return (
-            <Link
-              key={item.path}
-              href={item.path}
-            >
-              <motion.div
-                className={cn(
-                  "w-10 h-10 rounded-xl flex items-center justify-center relative",
-                  isActive ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25" : "text-muted-foreground hover:bg-white/10"
-                )}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Icon className="w-5 h-5" />
-              </motion.div>
-            </Link>
+            <div key={item.path} className="relative group">
+              <Link href={item.path}>
+                <motion.div
+                  className={cn(
+                    "w-10 h-10 rounded-xl flex items-center justify-center relative z-20 transition-colors duration-300",
+                    isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                  )}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {/* Active Indicator Background */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavMobile"
+                      className="absolute inset-0 bg-primary rounded-xl z-10 shadow-lg shadow-primary/25"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
+
+                  {/* Icon */}
+                  <Icon className={cn(
+                    "w-5 h-5 relative z-20",
+                    isActive && "text-primary-foreground" // Ensure icon is readable on active bg
+                  )} />
+                </motion.div>
+              </Link>
+            </div>
           );
         })}
       </nav>
