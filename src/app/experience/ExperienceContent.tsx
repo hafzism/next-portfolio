@@ -108,20 +108,20 @@ const ExperienceCard = ({ item, index, containerRef }: { item: typeof experience
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.7, delay: index * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="relative pl-12 pb-12 group last:pb-0"
+            className="relative pl-0 md:pl-12 pb-5 md:pb-12 group last:pb-0"
         >
             {/* Dot on the timeline */}
             <div
                 ref={dotRef}
                 className={cn(
-                    "absolute left-0 top-0 w-3 h-3 rounded-full bg-border border-2 border-background z-20 transition-all duration-500 group-hover:scale-150 group-hover:border-primary/50",
+                    "absolute left-0 top-0 w-3 h-3 rounded-full bg-border border-2 border-background z-20 transition-all duration-500 group-hover:scale-150 group-hover:border-primary/50 hidden md:block",
                     isReached ? activeDotColors[item.color as keyof typeof activeDotColors] : dotColors[item.color as keyof typeof dotColors]
                 )}
             />
 
             {/* Content Card - Using bento-card class to match landing page */}
             <div className={cn(
-                "bento-card p-4 md:p-5 transition-all duration-500 hover:-translate-y-0.5 relative overflow-hidden bg-card max-w-xl",
+                "bento-card p-4 md:p-5 transition-all duration-500 hover:-translate-y-0.5 relative overflow-hidden bg-card max-w-full md:max-w-xl",
                 hoverBgColors[item.color as keyof typeof hoverBgColors]
             )}>
                 <div className="flex flex-col gap-1 relative z-10">
@@ -129,7 +129,7 @@ const ExperienceCard = ({ item, index, containerRef }: { item: typeof experience
                         <h3 className="text-lg md:text-xl font-medium tracking-tight transition-colors group-hover:text-primary leading-tight">
                             {item.role}
                         </h3>
-                        <div className="grid grid-cols-2 gap-1.5 shrink-0">
+                        <div className="hidden md:grid grid-cols-2 gap-1.5 shrink-0">
                             {item.tags.map(tag => (
                                 <span
                                     key={tag}
@@ -176,12 +176,12 @@ const ExperienceContent = () => {
 
     return (
         <div ref={containerRef} className="h-full relative flex flex-col font-sans overflow-y-auto no-scrollbar scroll-smooth">
-            <main className="flex-1 px-6 md:px-12 pb-32 pt-10 md:pt-14">
-                <div className="max-w-3xl mx-auto pl-6 md:pl-14">
+            <main className="flex-1 px-4 md:px-12 pb-32 pt-10 md:pt-14">
+                <div className="max-w-3xl mx-auto pl-0 md:pl-14">
                     {/* Timeline Container */}
                     <div className="relative">
                         {/* Static Vertical Line (the track) */}
-                        <div className="absolute left-[5.5px] top-2 bottom-0 w-[1px] bg-border z-0" />
+                        <div className="absolute left-[5.5px] top-2 bottom-0 w-[1px] bg-border z-0 hidden md:block" />
 
                         {/* Experience Items */}
                         <div className="flex flex-col">
@@ -192,12 +192,12 @@ const ExperienceContent = () => {
                     </div>
 
                     {/* Footer Call to Action */}
-                    <div className="pl-12 mt-12">
+                    <div className="pl-0 md:pl-12 mt-12">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="p-6 md:p-8 rounded-2xl border border-border/50 bg-secondary/5 backdrop-blur-sm text-center max-w-xl"
+                            className="p-6 md:p-8 rounded-2xl border border-border/50 bg-secondary/5 backdrop-blur-sm text-center max-w-full md:max-w-xl"
                         >
                             <h2 className="text-xl md:text-2xl font-medium mb-3">Want to work together?</h2>
                             <p className="text-muted-foreground mb-6 max-w-sm mx-auto text-sm md:text-base">
