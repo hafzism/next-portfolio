@@ -150,6 +150,10 @@ const ChatSection = () => {
         body: JSON.stringify({ messages: history }),
       });
 
+      if (res.status === 429) {
+        throw new Error("You have reached the limit of 20 messages. Please try again later!");
+      }
+
       if (!res.ok || !res.body) {
         throw new Error("Network error — please try again.");
       }
