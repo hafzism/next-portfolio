@@ -108,6 +108,13 @@ Full experience timeline: [experience](/experience)
    Live site: [scrybe.hafzism.com](https://scrybe.hafzism.com)
    GitHub: [source code](https://github.com/hafzism/scrybe)
 
+TabTrails (2026) 
+   A semantic memory layer for your browser that captures, summarizes, and indexes web pages for effortless retrieval. It allows users to browse naturally while a background service builds a searchable knowledge base, enabling semantic queries like "that recipe I saw yesterday." 
+   Features: AI-Powered Summarization, Semantic Vector Search, Natural Language Time Filters, Private Local-Only Mode.
+   Tech: Node.js, Express, Google Gemini, Supabase, pgvector, Chrome Extension. 
+   Portfolio page: [More about TabTrails](/projects/tabtrails)
+   Live site: [tabtrails.hafzism.com](https://tabtrails.hafzism.com)
+   GitHub: [source code](https://github.com/hafzism/tabtrail)
 ---
 
 # Contact

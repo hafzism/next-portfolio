@@ -68,7 +68,7 @@ const ProjectCard = ({ id, title, description, icon, gradient, index, className 
           layoutId={`project-icon-${id}`}
           className={cn(
             "w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-2xl md:rounded-[1.5rem] flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-105 overflow-hidden",
-            (id === 'hayon' || id === 'NearBuy') ? 'bg-white' :
+            (id === 'hayon' || id === 'NearBuy' || id === 'tabtrails') ? 'bg-white' :
               (id === 'scrybe') ? 'bg-[#1e3876]' :
                 (id === 'LitBay') ? 'bg-[#be9971]' : 'bg-black/10'
           )}

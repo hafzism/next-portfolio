@@ -12,7 +12,7 @@ const ProjectMarquee = () => {
           <Link
             key={`${project.id}-${index}`}
             href={`/projects/${project.id}`}
-            className={`project-icon ${(project.id === 'hayon' || project.id === 'NearBuy') ? 'bg-white' :
+            className={`project-icon ${(project.id === 'hayon' || project.id === 'NearBuy'  || project.id === 'tabtrails') ? 'bg-white' :
               (project.id === 'scrybe') ? 'bg-[#1e3876]' :
                 (project.id === 'LitBay') ? 'bg-[#be9971]' : project.gradient
               } text-white shrink-0 cursor-pointer hover:scale-110 transition-transform overflow-hidden flex items-center justify-center`}

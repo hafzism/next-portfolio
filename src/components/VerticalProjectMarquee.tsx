@@ -12,7 +12,7 @@ const VerticalProjectMarquee = () => {
                     <Link
                         key={`${project.id}-${index}`}
                         href={`/projects/${project.id}`}
-                        className={`w-12 h-12 rounded-lg ${(project.id === 'hayon' || project.id === 'NearBuy') ? 'bg-white' :
+                        className={`w-12 h-12 rounded-lg ${(project.id === 'hayon' || project.id === 'NearBuy' || project.id === 'tabtrails') ? 'bg-white' :
                             (project.id === 'scrybe') ? 'bg-[#1e3876]' :
                                 (project.id === 'LitBay') ? 'bg-[#be9971]' : project.gradient
                             } text-white shrink-0 cursor-pointer hover:scale-110 transition-transform overflow-hidden flex items-center justify-center border border-border/50`}

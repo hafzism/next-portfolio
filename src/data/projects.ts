@@ -3,6 +3,8 @@ import hayonLogo from "@/assets/hayonlogo.png";
 import LitBayLogo from "@/assets/LitBay_logo.png";
 import NearBuyLogo from "@/assets/nearlogo.png";
 import scrybeLogo from "@/assets/scrybe_logo.png";
+import tabtrailsLogo from "@/assets/tabtrails_logo.png";
+
 
 export interface Project {
   id: string;
@@ -123,5 +125,30 @@ export const projects: Project[] = [
       { name: "MongoDB", icon: "https://skillicons.dev/icons?i=mongodb" },
       { name: "Vercel", icon: "https://skillicons.dev/icons?i=vercel" }
     ]
-  }
+  },{
+  id: "tabtrails",
+  title: "TabTrails",
+  description: "A semantic memory layer for your browser — powered by Google Gemini AI and Supabase.",
+  icon: tabtrailsLogo,
+  gradient: "bg-[#5d4b9b]",
+  about: "A browser extension and backend service that captures your web history, summarizes it using AI, and enables semantic search. It uses Google Gemini for summarization and embeddings, and Supabase pgvector for high-performance vector search.",
+  features: [
+    "AI-Powered Summarization",
+    "Semantic Vector Search",
+    "Natural Language Time Queries",
+    "Offline Local-Only Mode",
+    "Automated Background Capture",
+  ],
+  link: "https://tabtrails.hafzism.in", // Replace with your actual live site if different
+  github: "https://github.com/hafzism/tabtrail",
+  year: "2026",
+  tech: [
+    { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+    { name: "Express", icon: "https://skillicons.dev/icons?i=express" },
+    { name: "Google Gemini", icon: "https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" },
+    { name: "Supabase", icon: "https://skillicons.dev/icons?i=supabase" },
+    { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
+    { name: "Chrome Extension", icon: "https://skillicons.dev/icons?i=chrome" }
+  ]
+}
 ];
