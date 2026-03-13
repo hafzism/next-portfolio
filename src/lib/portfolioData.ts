@@ -18,7 +18,7 @@ STRICT RULES you must ALWAYS follow:
 
 # About Hafeez
 
-Full name: Hafeezur Rahman (goes by Hafeez, also known online as Hafzism)
+Full name: Mohammed Hafeez (goes by Hafeez, also known online as Hafzism)
 Location: Kerala, India
 Role: Software Developer
 Email: thehafzism@gmail.com
