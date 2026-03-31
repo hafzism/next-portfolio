@@ -108,13 +108,21 @@ Full experience timeline: [experience](/experience)
    Live site: [scrybe.hafzism.com](https://scrybe.hafzism.com)
    GitHub: [source code](https://github.com/hafzism/scrybe)
 
-TabTrails (2026) 
-   A semantic memory layer for your browser that captures, summarizes, and indexes web pages for effortless retrieval. It allows users to browse naturally while a background service builds a searchable knowledge base, enabling semantic queries like "that recipe I saw yesterday." 
+5. TabTrails (2026)
+   A semantic memory layer for your browser that captures, summarizes, and indexes web pages for effortless retrieval. It allows users to browse naturally while a background service builds a searchable knowledge base, enabling semantic queries like "that recipe I saw yesterday."
    Features: AI-Powered Summarization, Semantic Vector Search, Natural Language Time Filters, Private Local-Only Mode.
-   Tech: Node.js, Express, Google Gemini, Supabase, pgvector, Chrome Extension. 
+   Tech: Node.js, Express, Google Gemini, Supabase, pgvector, Chrome Extension.
    Portfolio page: [More about TabTrails](/projects/tabtrails)
    Live site: [tabtrails.hafzism.com](https://tabtrails.hafzism.com)
    GitHub: [source code](https://github.com/hafzism/tabtrail)
+
+6. Perfect Prompt (2026)
+   A Chrome Extension (Manifest V3) that injects a floating toolbar into the world's top AI chat platforms — ChatGPT, Gemini, Claude, DeepSeek, and Perplexity — giving users instant tools to refine, review, save, and reuse their prompts, all powered by the Gemini API.
+   Features: AI Prompt Perfecting (rewrites prompts to be clearer and more effective), Prompt Feedback & Review (AI tells you what's weak and how to fix it), Save & Reuse Prompts (store prompts to local storage), Expert Prompt Templates (categorised library of expert-crafted templates), Multi-Platform Support (works on ChatGPT, Gemini, Claude, DeepSeek, Perplexity).
+   Tech: Chrome Extension (Manifest V3), Vanilla JavaScript, CSS (light/dark adaptive), Gemini API.
+   Portfolio page: [More about Perfect Prompt](/projects/perfectPrompt)
+   GitHub: [source code](https://github.com/hafzism/perfectPrompt)
+
 ---
 
 # Contact
