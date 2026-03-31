@@ -4,6 +4,7 @@ import LitBayLogo from "@/assets/LitBay_logo.png";
 import NearBuyLogo from "@/assets/nearlogo.png";
 import scrybeLogo from "@/assets/scrybe_logo.png";
 import tabtrailsLogo from "@/assets/tabtrails_logo.png";
+import perfectPromptLogo from "@/assets/perfectPrompt_logo.png";
 
 
 export interface Project {
@@ -150,5 +151,28 @@ export const projects: Project[] = [
     { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
     { name: "Chrome Extension", icon: "https://skillicons.dev/icons?i=chrome" }
   ]
-}
+},
+  {
+    id: "perfectPrompt",
+    title: "Perfect Prompt",
+    description: "Supercharge your AI prompts — right where you type them.",
+    icon: perfectPromptLogo,
+    gradient: "bg-[#f18749]",
+    about: "A Chrome Extension (Manifest V3) that injects a floating toolbar into the world's top AI chat platforms — ChatGPT, Gemini, Claude, DeepSeek, and Perplexity — giving you instant tools to refine, review, save, and reuse your prompts, all powered by the Gemini API.",
+    features: [
+      "AI Prompt Perfecting",
+      "Prompt Feedback & Review",
+      "Save & Reuse Prompts",
+      "Expert Prompt Templates",
+      "Multi-Platform Support"
+    ],
+    github: "https://github.com/hafzism/perfectPrompt",
+    year: "2026",
+    tech: [
+      { name: "Chrome Extension", icon: "https://skillicons.dev/icons?i=chrome" },
+      { name: "JavaScript", icon: "https://skillicons.dev/icons?i=js" },
+      { name: "CSS", icon: "https://skillicons.dev/icons?i=css" },
+      { name: "Gemini API", icon: "https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" }
+    ]
+  }
 ];

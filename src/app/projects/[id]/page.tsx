@@ -105,7 +105,8 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                                 "w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-2xl md:rounded-[1.5rem] flex items-center justify-center shrink-0 overflow-hidden",
                                 (id === 'hayon' || id === 'NearBuy'  || id === 'tabtrails') ? 'bg-white' :
                                     (id === 'scrybe') ? 'bg-[#1e3876]' :
-                                        (id === 'LitBay') ? 'bg-[#be9971]' : 'bg-black/10'
+                                        (id === 'LitBay') ? 'bg-[#be9971]' :
+                                            (id === 'perfectPrompt') ? 'bg-[#111827]' : 'bg-black/10'
                             )}
                         >
                             {typeof project.icon === 'string' ? (
@@ -270,7 +271,8 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                                         "shrink-0 w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl md:rounded-2xl flex items-center justify-center transition-transform hover:scale-110 overflow-hidden shadow-sm",
                                         (otherProject.id === 'hayon' || otherProject.id === 'NearBuy'  || otherProject.id === 'tabtrails') ? 'bg-white' :
                                             (otherProject.id === 'scrybe') ? 'bg-[#1e3876]' :
-                                                (otherProject.id === 'LitBay') ? 'bg-[#be9971]' : otherProject.gradient
+                                                (otherProject.id === 'LitBay') ? 'bg-[#be9971]' :
+                                                    (otherProject.id === 'perfectPrompt') ? 'bg-[#111827]' : otherProject.gradient
                                     )}
                                 >
                                     {typeof otherProject.icon === 'string' ? (
