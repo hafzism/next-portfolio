@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Bot, User, Loader2, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { track } from "@traqory/sdk";
 
 type ChatMessage = {
   id: string;
@@ -120,6 +121,7 @@ const ChatSection = () => {
     if (!trimmed || isLoading) return;
 
     setError(null);
+    track("chat_message_sent", { text: trimmed });
 
     const userMsg: ChatMessage = {
       id: crypto.randomUUID(),
@@ -198,6 +200,7 @@ const ChatSection = () => {
 
   const handleQuickQuestion = (question: string) => {
     setInput(question);
+    track("chat_quick_question_clicked", { question });
     inputRef.current?.focus();
   };
 
@@ -222,7 +225,10 @@ const ChatSection = () => {
               </span>
               {/* Minimize button */}
               <button
-                onClick={() => setMinimized(true)}
+                onClick={() => {
+                  setMinimized(true);
+                  track("chat_minimized");
+                }}
                 className="p-1 rounded-lg hover:bg-secondary/60 text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Minimize chat"
               >

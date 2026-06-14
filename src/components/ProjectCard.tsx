@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useProjectTransition } from "@/context/ProjectTransitionContext";
 import { useRef, ReactNode } from "react";
 import Image, { StaticImageData } from "next/image";
+import { track } from "@traqory/sdk";
 
 interface ProjectCardProps {
   id: string;
@@ -21,6 +22,7 @@ const ProjectCard = ({ id, title, description, icon, gradient, index, className 
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
+    track("project_card_clicked", { projectId: id, projectTitle: title });
     if (id === 'coming-soon') {
       router.push('/contact');
       return;

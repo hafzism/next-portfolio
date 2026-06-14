@@ -5,7 +5,7 @@ import { Providers } from "@/components/Providers";
 import SideNav from "@/components/SideNav";
 import Header from "@/components/Header";
 import GlobalBackground from "@/components/GlobalBackground";
-import Script from "next/script";
+import { TraqoryProvider } from "@/components/providers/TraqoryProvider";
 
 
 const atkinson = Atkinson_Hyperlegible({
@@ -80,6 +80,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${atkinson.variable} ${fraunces.variable} antialiased`}>
+        <TraqoryProvider />
         <Providers>
           <GlobalBackground />
           <SideNav />
@@ -94,11 +95,6 @@ export default function RootLayout({
           </div>
         </Providers>
       </body>
-      <Script
-        src="https://cdn.tracpy.com/script.js"
-        data-key="trq_live_69dcb1f1f9ec9aa369dc4c01e93669ef7b560887ba4038e9"
-        strategy="afterInteractive"
-      />
     </html>
   );
 }

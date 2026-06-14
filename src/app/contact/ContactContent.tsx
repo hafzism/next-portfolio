@@ -5,6 +5,7 @@ import { Send, Linkedin, Github, Instagram, Mail } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
+import { track } from "@traqory/sdk";
 
 const ContactContent = () => {
     const { theme } = useTheme();
@@ -29,6 +30,7 @@ const ContactContent = () => {
     const handleCopyEmail = () => {
         navigator.clipboard.writeText("thehafzism@gmail.com");
         setCopied(true);
+        track("contact_email_copied");
         setTimeout(() => setCopied(false), 2000);
     };
 
@@ -60,6 +62,11 @@ const ContactContent = () => {
 
             if (result.success) {
                 setStatus("success");
+                track("contact_form_submitted", {
+                    name: formData.name,
+                    email: formData.email,
+                    company: formData.company,
+                });
                 setFormData({
                     name: "",
                     email: "",
