@@ -84,7 +84,15 @@ Full experience timeline: [experience](/experience)
    Live site: [hayon.site](https://www.hayon.site)
    GitHub: [source code](https://github.com/devxtra-community/hayon)
 
-2. LitBay (2025)
+2. Collability (2026)
+   A production-style team collaboration workspace designed around shared Kanban boards. It enables teams to organize work through workspaces, boards, lists, and cards while supporting real-time collaboration, notifications, activity tracking, and role-based access control. Built with a full-stack TypeScript monorepo architecture.
+   Features: Workspace & Board Management, Role-Based Access Control, Kanban Boards with Drag & Drop, Real-Time Collaboration & Presence Indicators, Card Customization, In-App Notifications.
+   Tech: Next.js, NestJS, TypeScript, PostgreSQL, Prisma, Socket.io, EC2, Docker, Turborepo, pnpm Workspaces.
+   Portfolio page: [More about Collability](/projects/collability)
+   Live site: [collability.hafzism.in](https://collability.hafzism.in)
+   GitHub: [source code](https://github.com/hafzism/collability)
+
+3. LitBay (2025)
    A mini e-commerce application for books. Users can explore products, place orders, and track purchases; admins manage inventory, categories, and orders through a dedicated dashboard.
    Features: Product Search & Filter, Secure Authentication, Order Management, Admin Dashboard.
    Tech: React, Node.js, Express.js, MongoDB, AWS, Nginx, Tailwind CSS.
@@ -92,7 +100,7 @@ Full experience timeline: [experience](/experience)
    Live site: [litbay.hafzism.com](https://litbay.hafzism.com)
    GitHub: [source code](https://github.com/hafzism/litbay)
 
-3. NearBuy (2024)
+4. NearBuy (2024)
    A product discovery platform that connects users with local shops. Users browse nearby products, locate stores, and request deliveries. Shop owners, delivery partners, and admins manage their respective workflows.
    Features: Local Product Discovery, Store Location Mapping, Multi-Role Access, Delivery Requests.
    Tech: Django, Python, MySQL, Flutter, Render.
@@ -100,7 +108,7 @@ Full experience timeline: [experience](/experience)
    Live site: [nearbuy.hafzism.com](https://nearbuy.hafzism.com)
    GitHub: [source code](https://github.com/hafzism/nearbuy)
 
-4. Scrybe (2025)
+5. Scrybe (2025)
    A lightweight blogging application. Users can authenticate, create posts with text and images, explore content from other users, and view individual author profiles with their published posts.
    Features: User Authentication, Post Creation, Public Feed, Author Profiles.
    Tech: Next.js, TypeScript, JWT, Tailwind CSS, MongoDB, Vercel.
@@ -108,7 +116,7 @@ Full experience timeline: [experience](/experience)
    Live site: [scrybe.hafzism.com](https://scrybe.hafzism.com)
    GitHub: [source code](https://github.com/hafzism/scrybe)
 
-5. TabTrails (2026)
+6. TabTrails (2026)
    A semantic memory layer for your browser that captures, summarizes, and indexes web pages for effortless retrieval. It allows users to browse naturally while a background service builds a searchable knowledge base, enabling semantic queries like "that recipe I saw yesterday."
    Features: AI-Powered Summarization, Semantic Vector Search, Natural Language Time Filters, Private Local-Only Mode.
    Tech: Node.js, Express, Google Gemini, Supabase, pgvector, Chrome Extension.
@@ -116,7 +124,7 @@ Full experience timeline: [experience](/experience)
    Live site: [tabtrails.hafzism.com](https://tabtrails.hafzism.com)
    GitHub: [source code](https://github.com/hafzism/tabtrail)
 
-6. Perfect Prompt (2026)
+7. Perfect Prompt (2026)
    A Chrome Extension (Manifest V3) that injects a floating toolbar into the world's top AI chat platforms — ChatGPT, Gemini, Claude, DeepSeek, and Perplexity — giving users instant tools to refine, review, save, and reuse their prompts, all powered by the Gemini API.
    Features: AI Prompt Perfecting (rewrites prompts to be clearer and more effective), Prompt Feedback & Review (AI tells you what's weak and how to fix it), Save & Reuse Prompts (store prompts to local storage), Expert Prompt Templates (categorised library of expert-crafted templates), Multi-Platform Support (works on ChatGPT, Gemini, Claude, DeepSeek, Perplexity).
    Tech: Chrome Extension (Manifest V3), Vanilla JavaScript, CSS (light/dark adaptive), Gemini API.

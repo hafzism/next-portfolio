@@ -73,7 +73,8 @@ const ProjectCard = ({ id, title, description, icon, gradient, index, className 
             (id === 'hayon' || id === 'NearBuy' || id === 'tabtrails') ? 'bg-white' :
               (id === 'scrybe') ? 'bg-[#1e3876]' :
                 (id === 'LitBay') ? 'bg-[#be9971]' :
-                  (id === 'perfectPrompt') ? 'bg-[#111827]' : 'bg-black/10'
+                  (id === 'perfectPrompt') ? 'bg-[#111827]' :
+                    (id === 'collability') ? 'bg-black' : 'bg-black/10'
           )}
         >
           {typeof icon === 'string' || (!icon || (typeof icon === 'object' && !('src' in icon))) ? (
@@ -86,18 +87,24 @@ const ProjectCard = ({ id, title, description, icon, gradient, index, className 
             />
           )}
         </motion.div>
-
+ 
         {/* Content */}
         <div className="flex-1 min-w-0 text-left">
           <motion.h3
             layoutId={`project-title-${id}`}
-            className="text-base md:text-2xl font-bold text-white mb-3 md:mb-4 font-serif tracking-tight"
+            className={cn(
+              "text-base md:text-2xl font-bold mb-3 md:mb-4 font-serif tracking-tight",
+              id === 'collability' ? "text-slate-900" : "text-white"
+            )}
           >
             {title}
           </motion.h3>
           <motion.p
             layoutId={`project-desc-${id}`}
-            className="text-xs md:text-base text-white/90 line-clamp-2 max-w-xl font-medium leading-relaxed"
+            className={cn(
+              "text-xs md:text-base line-clamp-2 max-w-xl font-medium leading-relaxed",
+              id === 'collability' ? "text-slate-600" : "text-white/90"
+            )}
           >
             {description}
           </motion.p>

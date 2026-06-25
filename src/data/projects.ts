@@ -5,6 +5,7 @@ import NearBuyLogo from "@/assets/nearlogo.png";
 import scrybeLogo from "@/assets/scrybe_logo.png";
 import tabtrailsLogo from "@/assets/tabtrails_logo.png";
 import perfectPromptLogo from "@/assets/perfectPrompt_logo.png";
+import collabilityLogo from "@/assets/collability.png";
 
 
 export interface Project {
@@ -50,6 +51,36 @@ export const projects: Project[] = [
       { name: "Redis", icon: "https://skillicons.dev/icons?i=redis" },
       { name: "RabbitMQ", icon: "https://skillicons.dev/icons?i=rabbitmq" },
       { name: "Gemini API", icon: "https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg" }
+    ]
+  },
+  {
+    id: "collability",
+    title: "Collability",
+    description: "Real-time team collaboration workspace centered around interactive Kanban boards.",
+    icon: collabilityLogo,
+    gradient: "bg-[#faf8f2]",
+    about: "Collability is a production-style team collaboration workspace designed around shared Kanban boards. It enables teams to organize work through workspaces, boards, lists, and cards while supporting real-time collaboration, notifications, activity tracking, and role-based access control. The application was built as a realistic collaboration product using a full-stack TypeScript monorepo architecture.",
+    features: [
+      "Workspace Creation & Member Management",
+      "Role-Based Access Control",
+      "Kanban Boards with Drag & Drop",
+      "Real-Time Collaboration & Presence Indicators",
+      "Card Customization (labels, due dates, comments)",
+      "In-App Notifications & Activity Tracking"
+    ],
+    link: "https://collability.hafzism.in",
+    github: "https://github.com/hafzism/collability",
+    year: "2026",
+    tech: [
+      { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
+      { name: "NestJS", icon: "https://skillicons.dev/icons?i=nestjs" },
+      { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+      { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
+      { name: "Prisma", icon: "https://skillicons.dev/icons?i=prisma" },
+      { name: "Socket.io", icon: "https://skillicons.dev/icons?i=socketio" },
+      { name: "EC2", icon: "https://icon.icepanel.io/AWS/svg/Compute/EC2.svg" },
+      { name: "Docker", icon: "https://skillicons.dev/icons?i=docker" },
+      { name: "Turborepo", icon: "https://avatars.githubusercontent.com/u/156161582?s=200&v=4" }
     ]
   },
   {

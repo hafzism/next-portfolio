@@ -105,8 +105,8 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                                 "w-24 h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-2xl md:rounded-[1.5rem] flex items-center justify-center shrink-0 overflow-hidden",
                                 (id === 'hayon' || id === 'NearBuy'  || id === 'tabtrails') ? 'bg-white' :
                                     (id === 'scrybe') ? 'bg-[#1e3876]' :
-                                        (id === 'LitBay') ? 'bg-[#be9971]' :
-                                            (id === 'perfectPrompt') ? 'bg-[#111827]' : 'bg-black/10'
+                                            (id === 'perfectPrompt') ? 'bg-[#111827]' :
+                                                (id === 'collability') ? 'bg-black' : 'bg-black/10'
                             )}
                         >
                             {typeof project.icon === 'string' ? (
@@ -122,13 +122,19 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                         <div className="flex-1 min-w-0 text-left">
                             <motion.h3
                                 layoutId={`project-title-${id}`}
-                                className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4 font-serif tracking-tight"
+                                className={cn(
+                                    "text-xl md:text-2xl font-bold mb-3 md:mb-4 font-serif tracking-tight",
+                                    id === 'collability' ? "text-slate-900" : "text-white"
+                                )}
                             >
                                 {project.title}
                             </motion.h3>
                             <motion.p
                                 layoutId={`project-desc-${id}`}
-                                className="text-xs md:text-base text-white/90 line-clamp-2 max-w-xl font-medium leading-relaxed"
+                                className={cn(
+                                    "text-xs md:text-base line-clamp-2 max-w-xl font-medium leading-relaxed",
+                                    id === 'collability' ? "text-slate-600" : "text-white/90"
+                                )}
                             >
                                 {project.description}
                             </motion.p>
@@ -271,8 +277,8 @@ const ProjectDetail = ({ onBack }: ProjectDetailProps) => {
                                         "shrink-0 w-14 h-14 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-xl md:rounded-2xl flex items-center justify-center transition-transform hover:scale-110 overflow-hidden shadow-sm",
                                         (otherProject.id === 'hayon' || otherProject.id === 'NearBuy'  || otherProject.id === 'tabtrails') ? 'bg-white' :
                                             (otherProject.id === 'scrybe') ? 'bg-[#1e3876]' :
-                                                (otherProject.id === 'LitBay') ? 'bg-[#be9971]' :
-                                                    (otherProject.id === 'perfectPrompt') ? 'bg-[#111827]' : otherProject.gradient
+                                                    (otherProject.id === 'perfectPrompt') ? 'bg-[#111827]' :
+                                                        (otherProject.id === 'collability') ? 'bg-black' : otherProject.gradient
                                     )}
                                 >
                                     {typeof otherProject.icon === 'string' ? (
