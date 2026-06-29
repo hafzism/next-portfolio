@@ -19,6 +19,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hafzism.com"),
   title: {
     default: "Hafzism | Software Developer",
     template: "%s | Hafzism"
@@ -38,6 +39,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Hafeez", url: "https://github.com/hafzism" }],
   creator: "Hafeez",
   publisher: "Hafzism",
+  alternates: {
+    canonical: "/",
+  },
   robots: {
     index: true,
     follow: true,
@@ -45,7 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://hafzism.com", // Adjust if you have a different domain
+    url: "https://hafzism.com",
     siteName: "Hafzism",
     title: "Hafzism | Software Developer",
     description: "Software developer from Kerala, India. Building modern web experiences and robust applications.",
@@ -66,8 +70,8 @@ export const metadata: Metadata = {
     images: ["/hafzismlogo.png"],
   },
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   },
 };
@@ -77,9 +81,37 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Mohammed Hafeez",
+    "alternateName": "Hafzism",
+    "url": "https://hafzism.com",
+    "image": "https://hafzism.com/hafzismlogo.png",
+    "sameAs": [
+      "https://github.com/hafzism",
+      "https://www.linkedin.com/in/hafzism/"
+    ],
+    "jobTitle": "Software Developer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "DevXtra"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Kerala",
+      "addressCountry": "India"
+    },
+    "email": "thehafzism@gmail.com"
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${atkinson.variable} ${fraunces.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <TraqoryProvider />
         <Providers>
           <GlobalBackground />

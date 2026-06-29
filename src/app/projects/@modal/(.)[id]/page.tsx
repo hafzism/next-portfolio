@@ -1,6 +1,6 @@
 "use client";
 
-import ProjectDetail from "../../[id]/page";
+import ProjectDetail from "../../[id]/ProjectDetailClient";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
