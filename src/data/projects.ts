@@ -6,6 +6,7 @@ import scrybeLogo from "@/assets/scrybe_logo.png";
 import tabtrailsLogo from "@/assets/tabtrails_logo.png";
 import perfectPromptLogo from "@/assets/perfectPrompt_logo.png";
 import collabilityLogo from "@/assets/collability.png";
+import netSpeedUndoLogo from "@/assets/netspeedundo_logo.png";
 
 
 export interface Project {
@@ -81,6 +82,32 @@ export const projects: Project[] = [
       { name: "EC2", icon: "https://icon.icepanel.io/AWS/svg/Compute/EC2.svg" },
       { name: "Docker", icon: "https://skillicons.dev/icons?i=docker" },
       { name: "Turborepo", icon: "https://avatars.githubusercontent.com/u/156161582?s=200&v=4" }
+    ]
+  },
+  {
+    id: "netSpeedUndo",
+    title: "NetSpeedUndo",
+    description: "Kerala's community internet speed map — explore, compare, and submit local speed test results.",
+    icon: netSpeedUndoLogo,
+    gradient: "bg-[#14532d]",
+    about: "NetSpeedUndo is a Kerala-focused community internet speed map built to make local network performance easier to explore and compare. Users can browse speed test results by town, provider, and connection type, and submit their own GPS-backed speed tests. The goal is to create a practical, region-specific view of internet quality instead of relying on broad national-level statistics that don't reflect local differences.",
+    features: [
+      "Interactive Leaflet Map",
+      "GPS-Backed Speed Test Submissions",
+      "Filter by Town, Provider & Connection Type",
+      "Local Stats for Selected Area",
+      "Kerala-Scoped Anonymous Submissions",
+      "In-App Speed Test Runner"
+    ],
+    github: "https://github.com/hafzism/netspeedundo",
+    year: "2026",
+    tech: [
+      { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
+      { name: "React", icon: "https://skillicons.dev/icons?i=react" },
+      { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+      { name: "Leaflet", icon: "https://avatars.githubusercontent.com/u/1051227?s=200&v=4" },
+      { name: "Supabase", icon: "https://skillicons.dev/icons?i=supabase" },
+      { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" }
     ]
   },
   {
