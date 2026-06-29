@@ -19,7 +19,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hafzism.com"),
+  metadataBase: new URL("https://hafzism.in"),
   title: {
     default: "Hafzism | Software Developer",
     template: "%s | Hafzism"
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://hafzism.com",
+    url: "https://hafzism.in",
     siteName: "Hafzism",
     title: "Hafzism | Software Developer",
     description: "Software developer from Kerala, India. Building modern web experiences and robust applications.",
@@ -86,8 +86,8 @@ export default function RootLayout({
     "@type": "Person",
     "name": "Mohammed Hafeez",
     "alternateName": "Hafzism",
-    "url": "https://hafzism.com",
-    "image": "https://hafzism.com/hafzismlogo.png",
+    "url": "https://hafzism.in",
+    "image": "https://hafzism.in/hafzismlogo.png",
     "sameAs": [
       "https://github.com/hafzism",
       "https://www.linkedin.com/in/hafzism/"

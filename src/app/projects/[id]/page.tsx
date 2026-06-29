@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             title: `${project.title} | Hafzism Project`,
             description: project.about || project.description,
             type: "website",
-            url: `https://hafzism.com/projects/${project.id}`,
+            url: `https://hafzism.in/projects/${project.id}`,
             images: [
                 {
                     url: "/hafzismlogo.png",

@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://hafzism.com";
+  const baseUrl = "https://hafzism.in";
 
   // Define the main static pages of the portfolio
   const staticPaths = ["", "/about", "/contact", "/experience", "/projects"];
